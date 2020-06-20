@@ -125,9 +125,15 @@ footer a:hover {
     color: var(--prim-1);
 }
 
-#content img {
-    max-width: 100%;
+#content img:not(.emoji) {
+    display: block;
+    max-width: 92.5%;
     height: auto;
+    margin: 2em auto 2em auto;
+    background-color: var(--dark-0);
+    box-shadow: 0 0 6px rgba(0,0,0,0.20), 
+                0 0 4px rgba(0,0,0,0.32);
+    border-radius: 4px;
 }
 
 footer {
@@ -182,24 +188,6 @@ blockquote footer {
 
 #comments {
     display: block;
-}
-
-pre {
-    overflow-x: auto;
-}
-pre code {
-    display: block;
-    padding: 0.5em;
-    overflow-wrap: normal;
-    white-space: pre;
-}
-
-pre, code, .hljs {
-    background-color: var(--dark-0);
-    border-width: 0px;
-}
-code {
-    color: var(--prim-1);
 }
 
 @media (min-width: 768px) {

@@ -2,19 +2,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>Raj&#39;s Blog: The Season of Lockdowns</title>
+    <title>Raj&#39;s Blog: GSoC 2019: Week 6 updates</title>
     
 <meta name="keywords" content="NonTech,GSoC,Terasology">
 
-<meta name="description" content="We all expect a bunch of new stories, resolutions, and ideas popping up at the start of each year. But 2020 wasn&#39;t supposed to be just another year, it&#39;s a new decade. So it&#39;s natural to expect that the usual new year excitement would be amped up all round the world. Alas, things turned out in an exactly opposite way, isn&#39;t it?">
+<meta name="description" content="This week was devoted to design and development of the new package manager, another flagship feature for the Launcher&#39;s upcoming release.">
 
-<meta property="og:description" content="We all expect a bunch of new stories, resolutions, and ideas popping up at the start of each year. But 2020 wasn&#39;t supposed to be just another year, it&#39;s a new decade. So it&#39;s natural to expect that the usual new year excitement would be amped up all round the world. Alas, things turned out in an exactly opposite way, isn&#39;t it?">
+<meta property="og:description" content="This week was devoted to design and development of the new package manager, another flagship feature for the Launcher&#39;s upcoming release.">
 
-<meta property="og:url" content="https://praj.in/posts/2020/the-season-of-lockdowns/" />
-<meta property="og:title" content="The Season of Lockdowns" />
+<meta property="og:url" content="https://praj.in/posts/2019/gsoc-2019-week-6-updates/" />
+<meta property="og:title" content="GSoC 2019: Week 6 updates" />
 <meta property="og:type" content="article" />
 
-    <link rel="canonical" href="https://praj.in/posts/2020/the-season-of-lockdowns/">
+    <link rel="canonical" href="https://praj.in/posts/2019/gsoc-2019-week-6-updates/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Source+Sans+Pro&family=Source+Code+Pro&display=swap" rel="stylesheet"> 
@@ -68,28 +68,33 @@
 <div id="post">
     <div class="post-header">
     <div id="post-meta" class="row">
-        <div class="col-lg-6">June 7, 2020</div>
+        <div class="col-lg-6">July 8, 2019</div>
         
     </div>
-    <h2>The Season of Lockdowns</h2>
+    <h2>GSoC 2019: Week 6 updates</h2>
 </div>
 <div>
     
-    <p>We all expect a bunch of new stories, resolutions, and ideas popping up at the start of each year. But 2020 wasn't supposed to be just another year, it's a new decade. So it's natural to expect that the usual new year excitement would be amped up all round the world. Alas, things turned out in an exactly opposite way, isn't it?</p><!--more--><p>The coronavirus outbreak has been dangerous for a lot more than our immune systems. Lockdowns and economic crises are already affecting our day to day lives. The only way to help ourselves is to maintain a distance and prevent the virus from spreading. Frankly, I've not given up on the goal of increasing my digital footprint. Now with the college shut down and internships canceled, it seems like I'm in a pretty good position to roll out my new blog and start practicing. 👍️</p><p>There's always a lot of news to share, but I'm afraid they won't fit into one blog post. Recently, I've been tinkering around a lot of stuff related to the Java ecosystem including Clojure, libGDX, and GraalVM. I also got invited to Google foobar and the questions were challenging as ever. Currently, I'm sharpening my web dev skills and hoping to get a remote internship soon.</p><p>So that was a bit of my status update. Everyone is undergoing through their bag of troubles, but there's so little we can do about. Nevertheless, this will come to an end too. So stay home, stay safe, and make great use of every passing second. 💮</p><p><em>P.S.: This is technically the first blog post although I have imported some posts from my old blog.</em></p>
+    <p>This week was devoted to design and development of the new package manager, another flagship feature for the Launcher's upcoming release.</p><!--more--><h3 id="new-package-manager-api">New Package Manager API</h3><p>After a lot of discussion on the launcher's slack, we've made a fairly concrete roadmap for the Package Manager's design. Here is a list of notable features it'll have by the end:</p><ul><li>Functionality for downloading, installing and removing game packages</li><li>A locally cached list of all game versions available online</li><li>Support for all four types of game builds:
+<ul><li><a href="http://jenkins.terasology.org/job/TerasologyStable/">Stable</a></li><li><a href="http://jenkins.terasology.org/job/Terasology/">Unstable</a></li><li><a href="http://jenkins.terasology.org/job/DistroOmegaRelease/">Omega stable</a></li><li><a href="http://jenkins.terasology.org/job/DistroOmega/">Omega unstable</a></li></ul></li><li>Support for different types of package providers, including our <a href="http://jenkins.terasology.org/">Jenkins server</a>, GitHub Package Registry or any custom provider</li><li>Easy support for 3rd-party package sources, on simply adding them by pasting their URL into the launcher</li></ul><p>At the time of writing this post, only syncing and caching of game versions has been implemented for all four types of game jobs present on our old Jenkins. The online tasks make use of Jenkin's REST API, along with GSON for parsing the results. Have a look at <a href="https://github.com/MovingBlocks/TerasologyLauncher/pull/448">this PR</a> for the code.</p><p>Be sure to check out <a href="https://forum.terasology.org/threads/gsoc-2019-terasology-launcher-4-0.2268/post-16362">this post</a> on my weekly GSoC forum thread.</p>
 </div>
 
 <div id="post-tags">
     <b>Tags: </b>
     
-    <a href="/tags/NonTech/">NonTech</a>
+    <a href="/tags/GSoC/">GSoC</a>
+    
+    <a href="/tags/Terasology/">Terasology</a>
     
 </div>
 
 
     <div id="prev-next">
         
+        <a href="/posts/2019/gsoc-2019-week-7-updates/">&laquo; GSoC 2019: Week 7 updates</a>
         
-        <a class="right" href="/posts/2019/gsoc-2019-week-12-updates/">GSoC 2019: Week 12 updates &raquo;</a>
+        
+        <a class="right" href="/posts/2019/gsoc-2019-week-5-updates/">GSoC 2019: Week 5 updates &raquo;</a>
         
     </div>
     
@@ -98,8 +103,8 @@
         <div id="disqus_thread"></div>
         <script type="text/javascript">
             var disqus_config = function () {
-                this.page.url = "https://praj.in/posts/2020/the-season-of-lockdowns/";
-                this.page.identifier = "The Season of Lockdowns";
+                this.page.url = "https://praj.in/posts/2019/gsoc-2019-week-6-updates/";
+                this.page.identifier = "GSoC 2019: Week 6 updates";
             };
             (function() {
                 var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

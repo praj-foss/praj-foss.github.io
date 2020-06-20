@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Raj&#39;s Blog: GSoC 2019: Week 10 updates</title>
+    
+<meta name="keywords" content="NonTech,GSoC,Terasology">
+
+<meta name="description" content="Alright! The last month is half done, and this week brings some more updates to the Package Manager. The integration is ready to be tested and is almost working just the way it used to, along with the invisible Package Manager underneath. Though it only supports storing and loading of cache now, future PRs should bring full powers to it: installation, uninstallation, etc.">
+
+<meta property="og:description" content="Alright! The last month is half done, and this week brings some more updates to the Package Manager. The integration is ready to be tested and is almost working just the way it used to, along with the invisible Package Manager underneath. Though it only supports storing and loading of cache now, future PRs should bring full powers to it: installation, uninstallation, etc.">
+
+<meta property="og:url" content="https://praj.in/posts/2019/gsoc-2019-week-10-updates/" />
+<meta property="og:title" content="GSoC 2019: Week 10 updates" />
+<meta property="og:type" content="article" />
+
+    <link rel="canonical" href="https://praj.in/posts/2019/gsoc-2019-week-10-updates/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Source+Sans+Pro&family=Source+Code+Pro&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+
+    <link href="/css/screen.css" rel="stylesheet" type="text/css" />
+    <link href="/css/prism.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Raj&#39;s Blog</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li
+                >
+                <a href="/about/">About</a>
+                </li>
+                
+                <li
+                >
+                <a href="/projects/">Projects</a>
+                </li>
+                
+                <li ><a href="/archives/">Archives</a></li>
+                <li><a href="/feed.xml"><i class="fa fa-rss" aria-hidden="true"></i></a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div><!--/.container-fluid -->
+</nav>
+
+
+<div id="holder" class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="content">
+                
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta" class="row">
+        <div class="col-lg-6">August 7, 2019</div>
+        
+    </div>
+    <h2>GSoC 2019: Week 10 updates</h2>
+</div>
+<div>
+    
+    <p>Alright! The last month is half done, and this week brings some more updates to the Package Manager. The integration is ready to be tested and is almost working just the way it used to, along with the invisible Package Manager underneath. Though it only supports storing and loading of cache now, future PRs should bring full powers to it: installation, uninstallation, etc.</p><!--more--><h3 id="package-manager-api">Package Manager API</h3><p>The version list creation code has become full of streams and the lines of code have reduced significantly while keeping the Package Manager and the game version classes decoupled.</p><pre><code class="lang-java">// Get list of installed games
+final List&lt;TerasologyGameVersion&gt; allInstalledGames = getInstalledGames(gameDirectory);
+
+for (GameJob job : GameJob.values()) {
+    // Get all available games from Jenkins or cache
+    final List&lt;TerasologyGameVersion&gt; availableGames =
+            packageManager.getPackageVersions(GamePackageType.byJobName(job.name()))
+                    .stream()
+                    .map(build -&gt; getGameVersion(build, job, cacheDirectory))
+                    .collect(Collectors.toList());
+
+    // Copy installation data for the games that are already installed
+    allInstalledGames.stream()
+            .filter(gameVersion -&gt; gameVersion.getJob().equals(job))
+            .forEach(game -&gt; {
+                for (TerasologyGameVersion availableGame : availableGames) {
+                    if (availableGame.getBuildNumber().equals(game.getBuildNumber())) {
+                        availableGame.setInstallationPath(game.getInstallationPath());
+                        availableGame.setGameJar(game.getGameJar());
+                        break;
+                    }
+                }
+            });
+
+    // Add the installed games and sort descendingly by build numbers
+    availableGames.sort(
+        Comparator.comparing(TerasologyGameVersion::getBuildNumber).reversed());
+        
+    // Add extra item denoting the latest version
+    availableGames.add(0, makeLatestFrom(availableGames.get(0)));
+
+    gameVersionLists.put(job, availableGames);
+}
+</code></pre><p>The launcher now lists failed builds along with the <em>latest</em> placeholder. All the basic features, i.e. downloading, starting and removing games are working fine.</p><p>Be sure to check out <a href="https://forum.terasology.org/threads/gsoc-2019-terasology-launcher-4-0.2268/post-16380">this post</a> on my weekly GSoC forum thread.</p>
+</div>
+
+<div id="post-tags">
+    <b>Tags: </b>
+    
+    <a href="/tags/GSoC/">GSoC</a>
+    
+    <a href="/tags/Terasology/">Terasology</a>
+    
+</div>
+
+
+    <div id="prev-next">
+        
+        <a href="/posts/2019/gsoc-2019-week-11-updates/">&laquo; GSoC 2019: Week 11 updates</a>
+        
+        
+        <a class="right" href="/posts/2019/gsoc-2019-week-9-updates/">GSoC 2019: Week 9 updates &raquo;</a>
+        
+    </div>
+    
+    
+    <div id="comments">
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            var disqus_config = function () {
+                this.page.url = "https://praj.in/posts/2019/gsoc-2019-week-10-updates/";
+                this.page.identifier = "GSoC 2019: Week 10 updates";
+            };
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//praj-in.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+    </div>
+    
+</div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>Copyright <i class="fa fa-copyright" aria-hidden="true"></i> 2020 Priyadarshi Raj
+    <p style="text-align: center;">Powered by <a href="https://cryogenweb.org">Cryogen</a></p>
+</footer>
+
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script>twemoji.parse(document.getElementById("content"));</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/components/prism-core.min.js" integrity="sha256-9h14mWYYiQGkeAKg2JtijbqApb56kgw57WN6sI6dwH0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha256-3S2PESHNt0YNL65z57WuHPHIv12fibpBDXepyCGHftw=" crossorigin="anonymous"></script>
+
+
+
+</body>
+</html>

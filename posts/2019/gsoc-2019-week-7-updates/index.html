@@ -2,19 +2,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>Raj&#39;s Blog: The Season of Lockdowns</title>
+    <title>Raj&#39;s Blog: GSoC 2019: Week 7 updates</title>
     
 <meta name="keywords" content="NonTech,GSoC,Terasology">
 
-<meta name="description" content="We all expect a bunch of new stories, resolutions, and ideas popping up at the start of each year. But 2020 wasn&#39;t supposed to be just another year, it&#39;s a new decade. So it&#39;s natural to expect that the usual new year excitement would be amped up all round the world. Alas, things turned out in an exactly opposite way, isn&#39;t it?">
+<meta name="description" content="A long-standing bug was fixed this week. This had been the cause of a test failure in TerasologyLauncherPRs job of our Jenkins, for almost as long as a month. Also did a few tweaks on the Package Manager API, along with a diagram for my initial plan.">
 
-<meta property="og:description" content="We all expect a bunch of new stories, resolutions, and ideas popping up at the start of each year. But 2020 wasn&#39;t supposed to be just another year, it&#39;s a new decade. So it&#39;s natural to expect that the usual new year excitement would be amped up all round the world. Alas, things turned out in an exactly opposite way, isn&#39;t it?">
+<meta property="og:description" content="A long-standing bug was fixed this week. This had been the cause of a test failure in TerasologyLauncherPRs job of our Jenkins, for almost as long as a month. Also did a few tweaks on the Package Manager API, along with a diagram for my initial plan.">
 
-<meta property="og:url" content="https://praj.in/posts/2020/the-season-of-lockdowns/" />
-<meta property="og:title" content="The Season of Lockdowns" />
+<meta property="og:url" content="https://praj.in/posts/2019/gsoc-2019-week-7-updates/" />
+<meta property="og:title" content="GSoC 2019: Week 7 updates" />
 <meta property="og:type" content="article" />
 
-    <link rel="canonical" href="https://praj.in/posts/2020/the-season-of-lockdowns/">
+    <link rel="canonical" href="https://praj.in/posts/2019/gsoc-2019-week-7-updates/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Source+Sans+Pro&family=Source+Code+Pro&display=swap" rel="stylesheet"> 
@@ -68,28 +68,32 @@
 <div id="post">
     <div class="post-header">
     <div id="post-meta" class="row">
-        <div class="col-lg-6">June 7, 2020</div>
+        <div class="col-lg-6">July 27, 2019</div>
         
     </div>
-    <h2>The Season of Lockdowns</h2>
+    <h2>GSoC 2019: Week 7 updates</h2>
 </div>
 <div>
     
-    <p>We all expect a bunch of new stories, resolutions, and ideas popping up at the start of each year. But 2020 wasn't supposed to be just another year, it's a new decade. So it's natural to expect that the usual new year excitement would be amped up all round the world. Alas, things turned out in an exactly opposite way, isn't it?</p><!--more--><p>The coronavirus outbreak has been dangerous for a lot more than our immune systems. Lockdowns and economic crises are already affecting our day to day lives. The only way to help ourselves is to maintain a distance and prevent the virus from spreading. Frankly, I've not given up on the goal of increasing my digital footprint. Now with the college shut down and internships canceled, it seems like I'm in a pretty good position to roll out my new blog and start practicing. 👍️</p><p>There's always a lot of news to share, but I'm afraid they won't fit into one blog post. Recently, I've been tinkering around a lot of stuff related to the Java ecosystem including Clojure, libGDX, and GraalVM. I also got invited to Google foobar and the questions were challenging as ever. Currently, I'm sharpening my web dev skills and hoping to get a remote internship soon.</p><p>So that was a bit of my status update. Everyone is undergoing through their bag of troubles, but there's so little we can do about. Nevertheless, this will come to an end too. So stay home, stay safe, and make great use of every passing second. 💮</p><p><em>P.S.: This is technically the first blog post although I have imported some posts from my old blog.</em></p>
+    <p>A long-standing bug was fixed this week. This had been the cause of <a href="http://jenkins.terasology.org/view/Launcher/job/TerasologyLauncherPRs/114/testReport/">a test failure</a> in <em>TerasologyLauncherPRs</em> job of <a href="http://jenkins.terasology.org/">our Jenkins</a>, for almost as long as a month. Also did a few tweaks on the Package Manager API, along with a diagram for my initial plan.</p><!--more--><h3 id="the-test-failure">The Test failure</h3><p>This test had been failing since <a href="http://jenkins.terasology.org/view/Launcher/job/TerasologyLauncherPRs/102/">build 102</a> of <em>TerasologyLauncherPRs</em>, but weirdly, all the tests were passing flawlessly on my local machine. Even weirder was the reason for this failure:</p><p><img src="/img/2019/screenshot_2019-07-27-terasologylauncherprs-114-test-testinitdefault-jenkins.png" alt="Screenshot" /></p><p>Coincidentally, this build was also the first in that line to be hosted on a <a href="http://jenkins.terasology.org/computer/martin-steiger.de/">new Jenkins node</a>. So our first guess was that it's failing due to some trouble detecting the right locale in the new server. But after hours of debugging and running groovy scripts, I failed to find a single environmental problem that could have caused it.</p><p>Miraculously, the test started failing on my local machine too after a point. And that's when I realized it wasn't actually a problem in the machine setup. After some more analysis, I had finally found the source of this problem: The state of a utility class was getting modified by a former test, which caused this test to make wrong assertions. This was corrected by resetting its state before starting on the newer test, and the job was done!</p><h3 id="package-manager-plans">Package Manager plans</h3><p>I made a diagram that describes our initial plan for the package manager. Only the three basic functionalities have been described:</p><p><img src="/img/2019/pkgmgr.png" alt="Diagram" /></p><p>Be sure to check out <a href="https://forum.terasology.org/threads/gsoc-2019-terasology-launcher-4-0.2268/#post-16372">this post</a> on my weekly GSoC forum thread.</p>
 </div>
 
 <div id="post-tags">
     <b>Tags: </b>
     
-    <a href="/tags/NonTech/">NonTech</a>
+    <a href="/tags/GSoC/">GSoC</a>
+    
+    <a href="/tags/Terasology/">Terasology</a>
     
 </div>
 
 
     <div id="prev-next">
         
+        <a href="/posts/2019/gsoc-2019-week-8-updates/">&laquo; GSoC 2019: Week 8 updates</a>
         
-        <a class="right" href="/posts/2019/gsoc-2019-week-12-updates/">GSoC 2019: Week 12 updates &raquo;</a>
+        
+        <a class="right" href="/posts/2019/gsoc-2019-week-6-updates/">GSoC 2019: Week 6 updates &raquo;</a>
         
     </div>
     
@@ -98,8 +102,8 @@
         <div id="disqus_thread"></div>
         <script type="text/javascript">
             var disqus_config = function () {
-                this.page.url = "https://praj.in/posts/2020/the-season-of-lockdowns/";
-                this.page.identifier = "The Season of Lockdowns";
+                this.page.url = "https://praj.in/posts/2019/gsoc-2019-week-7-updates/";
+                this.page.identifier = "GSoC 2019: Week 7 updates";
             };
             (function() {
                 var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

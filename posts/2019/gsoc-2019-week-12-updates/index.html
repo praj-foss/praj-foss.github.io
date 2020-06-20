@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Raj&#39;s Blog: GSoC 2019: Week 12 updates</title>
+    
+<meta name="keywords" content="NonTech,GSoC,Terasology">
+
+<meta name="description" content="Finally, we&#39;re at the end! This last week of GSoC includes implementation of parts of the revised Package Manager model, namely the PackageDatabase and some methods for interacting with our Jenkins repository.">
+
+<meta property="og:description" content="Finally, we&#39;re at the end! This last week of GSoC includes implementation of parts of the revised Package Manager model, namely the PackageDatabase and some methods for interacting with our Jenkins repository.">
+
+<meta property="og:url" content="https://praj.in/posts/2019/gsoc-2019-week-12-updates/" />
+<meta property="og:title" content="GSoC 2019: Week 12 updates" />
+<meta property="og:type" content="article" />
+
+    <link rel="canonical" href="https://praj.in/posts/2019/gsoc-2019-week-12-updates/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Source+Sans+Pro&family=Source+Code+Pro&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+
+    <link href="/css/screen.css" rel="stylesheet" type="text/css" />
+    <link href="/css/prism.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Raj&#39;s Blog</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li
+                >
+                <a href="/about/">About</a>
+                </li>
+                
+                <li
+                >
+                <a href="/projects/">Projects</a>
+                </li>
+                
+                <li ><a href="/archives/">Archives</a></li>
+                <li><a href="/feed.xml"><i class="fa fa-rss" aria-hidden="true"></i></a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div><!--/.container-fluid -->
+</nav>
+
+
+<div id="holder" class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="content">
+                
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta" class="row">
+        <div class="col-lg-6">August 22, 2019</div>
+        
+    </div>
+    <h2>GSoC 2019: Week 12 updates</h2>
+</div>
+<div>
+    
+    <p>Finally, we're at the end! This last week of GSoC includes implementation of parts of the revised Package Manager model, namely the <em>PackageDatabase</em> and some methods for interacting with <a href="http://jenkins.terasology.org">our Jenkins</a> repository.</p><!--more--><h3 id="packagedatabase">PackageDatabase</h3><p>As per the revisions proposed last week, I've started implementing the <em>PackageDatabase</em> as one of the core units in this API. Inside <em>$launcherDirectory/packages</em>, there are three important items to note:</p><ul><li><p>sources.json: <br />
+This specifies all repositories to sync packages with. Details include its url, type and the names of packages to track.</p></li><li><p>packages.db: <br />
+It's a serialized <em>HashMap</em> of repositories to lists of tracked packages that serves as our primary data store while querying for packages.</p></li><li><p>cache: <br />
+This folder will cache all the downloaded ZIP packages to support faster and offline package installation. Like all good cache storages, this too can be cleared any time to clean up disk space.</p></li></ul><p>For example, my <em>sources.json</em> looks like:</p><pre><code class="lang-json">[
+	{
+		"url" : "http://jenkins.terasology.org/",
+		"type" : "Jenkins",
+		"trackedPackages" : [
+			"DistroOmegaRelease",
+			"DistroOmega",
+			"TerasologyStable",
+			"Terasology"
+		]
+	}
+]
+</code></pre><p>When we sync the <em>PackageDatabase</em>, it reads all the entries in the <em>sources.json</em> and tries to fetch package details from the repositories and updates a map-based datastore, which could later be serialized down to the <em>packages.db</em> file. Based on the repository type, it makes use of a <em>RepositoryHandler</em> to properly fetch the package details. It makes use of <a href="https://github.com/google/gson">Gson</a> for all the JSON related tasks.</p><h3 id="repositoryhandler-and-jenkinshandler">RepositoryHandler and JenkinsHandler</h3><p>The RepositoryHandler interface specifies one important abstract method and one static factory method:</p><pre><code class="lang-java">interface RepositoryHandler {
+	List&lt;Package&gt; getPackages(PackageDatabase.Repository source);
+
+	static RepositoryHandler ofType(String type) {
+		switch (type) {
+			case "Jenkins": return new JenkinsHandler();
+			case "Custom":  return new CustomRepositoryHandler();
+			default: return null;
+		}
+	}
+}
+</code></pre><p>The <code>getPackages</code> method should be called to fetch all package information from a given source repository, and the <code>ofType</code> factory method will return the appropriate <code>RepositoryHandler</code> implementation for any type as specified in the <em>sources.json</em> file.</p><p><code>JenkinsHandler</code> is a <code>RepositoryHandler</code> that takes care of fetching package details from our Jenkins server, but can possibly interact with any Jenkins repository following a similar URL pattern. It connects using the Jenkins JSON API with a <em>tree</em> parameter to filter out the right details. The end product is a list of <em>Packages</em> that include all necessary details like its name, version and download link that could be used later.</p><p>Be sure to check out <a href="https://forum.terasology.org/threads/gsoc-2019-terasology-launcher-4-0.2268/post-16394">this post</a> on my weekly GSoC forum thread.</p>
+</div>
+
+<div id="post-tags">
+    <b>Tags: </b>
+    
+    <a href="/tags/GSoC/">GSoC</a>
+    
+    <a href="/tags/Terasology/">Terasology</a>
+    
+</div>
+
+
+    <div id="prev-next">
+        
+        <a href="/posts/2020/the-season-of-lockdowns/">&laquo; The Season of Lockdowns</a>
+        
+        
+        <a class="right" href="/posts/2019/gsoc-2019-week-11-updates/">GSoC 2019: Week 11 updates &raquo;</a>
+        
+    </div>
+    
+    
+    <div id="comments">
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            var disqus_config = function () {
+                this.page.url = "https://praj.in/posts/2019/gsoc-2019-week-12-updates/";
+                this.page.identifier = "GSoC 2019: Week 12 updates";
+            };
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//praj-in.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+    </div>
+    
+</div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>Copyright <i class="fa fa-copyright" aria-hidden="true"></i> 2020 Priyadarshi Raj
+    <p style="text-align: center;">Powered by <a href="https://cryogenweb.org">Cryogen</a></p>
+</footer>
+
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script>twemoji.parse(document.getElementById("content"));</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/components/prism-core.min.js" integrity="sha256-9h14mWYYiQGkeAKg2JtijbqApb56kgw57WN6sI6dwH0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha256-3S2PESHNt0YNL65z57WuHPHIv12fibpBDXepyCGHftw=" crossorigin="anonymous"></script>
+
+
+
+</body>
+</html>
