@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-154882046-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-154882046-1');
+    </script>
+
+    <meta charset="utf-8"/>
+    <title>Raj&#39;s Blog: OpenGL demo using GraalVM</title>
+    
+<meta name="keywords" content="GraalVM,OpenGL,Native,Java,NonTech,GSoC,Terasology">
+
+<meta name="description" content="Let me show how you can use GraalVM to create an OpenGL app in Java. This is made possible by the native-image tool that helps GraalVM produce truly native binaries capable of interacting with native libraries directly, without any JNI overhead. ⚡️">
+
+<meta property="og:description" content="Let me show how you can use GraalVM to create an OpenGL app in Java. This is made possible by the native-image tool that helps GraalVM produce truly native binaries capable of interacting with native libraries directly, without any JNI overhead. ⚡️">
+
+<meta property="og:url" content="https://praj.in/posts/2020/opengl-demo-using-graalvm/" />
+<meta property="og:title" content="OpenGL demo using GraalVM" />
+<meta property="og:type" content="article" />
+
+    <link rel="canonical" href="https://praj.in/posts/2020/opengl-demo-using-graalvm/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Source+Sans+Pro&family=Source+Code+Pro&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+
+    <link href="/css/screen.css" rel="stylesheet" type="text/css" />
+    <link href="/css/prism.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Raj&#39;s Blog</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li
+                >
+                <a href="/about/">About</a>
+                </li>
+                
+                <li
+                >
+                <a href="/projects/">Projects</a>
+                </li>
+                
+                <li ><a href="/archives/">Archives</a></li>
+                <li><a href="/feed.xml"><i class="fa fa-rss" aria-hidden="true"></i></a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div><!--/.container-fluid -->
+</nav>
+
+
+<div id="holder" class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="content">
+                
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta" class="row">
+        <div class="col-lg-6">June 21, 2020</div>
+        
+    </div>
+    <h2>OpenGL demo using GraalVM</h2>
+</div>
+<div>
+    
+    <p>Let me show how you can use <a href="https://www.graalvm.org/">GraalVM</a> to create an OpenGL app in Java. This is made possible by the <em>native-image</em> tool that helps GraalVM produce truly native binaries capable of interacting with native libraries directly, without any JNI overhead. ⚡️</p><!--more--><h2 id="introduction">Introduction</h2><p>GraalVM has been trending a lot in the Java ecosystem recently. It has a remarkable capability of compiling Java bytecode to native binaries ahead-of-time, an issue that many projects had tried to solve in the past. But that isn't the only fascinating thing. GraalVM supports a multitude of languages like Python, Ruby, JavaScript, C++, Rust, etc. besides the regular JVM languages (like Clojure, Kotlin, and Scala), and lets them interoperate with almost zero overhead. It can also run in multiple contexts including OpenJDK, Node.js, and SubstrateVM (internally used by native-image), making it a powerful polyglot runtime.</p><p>We'll be reproducing the <a href="https://rosettacode.org/wiki/OpenGL/Utah_Teapot">Utah teapot example</a> from Rosetta code in Java 11. Since we'd also be briefly leaving the JVM world to connect with native technologies, some parts would look familiar to C/C++ code. I'm not an OpenGL expert but I'll try my best to explain all the setup. All the source code can be found <a href="https://github.com/praj-foss/opengl-graal-examples">on GitHub</a>.</p><h2 id="project-structure">Project structure</h2><p>Atleast JDK 11 is required to run this project. The <a href="https://plugins.gradle.org/plugin/com.palantir.graal">gradle-graal</a> plugin is used to auto-download GraalVM. It is then configured accordingly:</p><pre><code class="lang-kotlin">graal {
+    graalVersion("20.0.0")
+    javaVersion("11")
+
+    mainClass("in.praj.glexamples.Main")
+    outputName("glExample")
+    option("--no-fallback")
+    option("--verbose")
+    option("--no-server")
+    option("-H:+ReportExceptionStackTraces")
+}
+</code></pre><p>We explicitly mention <code>--no-fallback</code> to prevent GraalVM from using a regular JVM when AOT compilation fails. We also need to specify dependencies on GraalVM and SubstrateVM APIs:</p><pre><code class="lang-kotlin">dependencies {
+    val graalVer = graal.graalVersion.get()
+
+    compileOnly("org.graalvm.sdk", "graal-sdk", graalVer)
+    compileOnly("org.graalvm.nativeimage", "svm", graalVer)
+}
+</code></pre><p>Like regular Gradle projects, the sources are present inside <em>src/main/java/</em>. The <code>GLUT</code> and <code>GL</code> classes provide access to functions from <em>libglut</em> and <em>libGL</em>, respectively. The <code>Main</code> class represents our actual OpenGL program. Now let's take a deep dive.</p><h2 id="app-context">App Context</h2><p>First, we specify the required native libraries in a <code>Directives</code> inner class and use it to setup a context for our application. This notifies SubstrateVM of our requirements:</p><pre><code class="lang-java">@CContext(Main.Directives.class)
+public class Main {
+    public static final class Directives implements CContext.Directives {
+        @Override
+        public List&lt;String&gt; getHeaderFiles() {
+            return Collections.singletonList("&lt;GL/glut.h&gt;");
+        }
+
+        @Override
+        public List&lt;String&gt; getLibraries() {
+            return Arrays.asList("GL", "glut");
+        }
+    }
+
+    // ...
+}
+</code></pre><p>Essentially, <code>getHeaderFiles</code> returns the list of all headers we'd have mentioned after <code>#include</code> if it were written in C/C++, and <code>getLibraries</code> returns the list of libraries that would have been passed to your C/C++ compiler.</p><h2 id="bindings">Bindings</h2><p>There's a rich set of API to provide support for raw C/C++ data structures. Most important interface to note is <code>org.graalvm.word.WordBase</code>. It's the base type used to represent native data types like pointers and structs, and its descendants are <strong>not</strong> regular Java objects (descendants of <code>java.lang.Object</code>). Let's take a quick look at parts of <code>&lt;GL/glut.h&gt;</code>, in an over-simplified manner:</p><pre><code class="lang-c">#define  GLUT_SINGLE  0x0000
+void  glutInit( int* pargc, char** argv );
+void  glutInitDisplayMode( unsigned int displayMode );
+void  glutDisplayFunc( void (* callback)( void ) );
+</code></pre><p>And here's what the corresponding Java bindings look like:</p><pre><code class="lang-java">@CContext(Main.Directives.class)
+class GLUT {
+    @CConstant("GLUT_SINGLE")
+    static native int SINGLE();
+
+    @CFunction("glutInit")
+    static native void init(CIntPointer argc, CCharPointerPointer argv);
+
+    @CFunction("glutInitDisplayMode")
+    static native void initDisplayMode(int displayMode);
+
+    @CFunction("glutDisplayFunc")
+    static native void displayFunc(Callback callback);
+
+    interface Callback extends CFunctionPointer {
+        @InvokeCFunctionPointer void invoke();
+    }
+
+    // ...
+}
+</code></pre><p>There's a boilerplate indeed, but it's much cleaner than JNI. By default, the annotations take the function name as an argument and find the corresponding declaration from the headers. So you have to pass in the names explicitly if you want to use something different for your bindings. Primitive Java types can be used to represent similar C/C++ types, but you'll need to use GraalVM's custom types for handling pointers.The <code>Callback</code> interface is used to represent the signature of a function that needs to be passed into <code>GLUT.displayFunc</code> using a function pointer. After a while, you'll see how we create and pass those function pointers.</p><h2 id="real-program">Real Program</h2><p>Inside our main method we have the actual app code. First, we need to pass in the CLI arguments to our <code>GLUT.init</code> call, and then configure the window system:</p><pre><code class="lang-java">try (var argv = CTypeConversion.toCStrings(args)) {
+    var argc = StackValue.get(CIntPointer.class);
+    argc.write(args.length);
+    GLUT.init(argc, argv.get());
+}
+
+GLUT.initDisplayMode(GLUT.SINGLE() | GLUT.RGB() | GLUT.DEPTH());
+GLUT.initWindowPosition(15, 15);
+GLUT.initWindowSize(400, 400);
+try (var title = CTypeConversion.toCString("Utah Teapot - GraalVM")) {
+    GLUT.createWindow(title.get());
+}
+</code></pre><p>The first parameter to <code>GLUT.init</code> is a pointer to the number of CLI arguments, and we create this on our stack using <code>StackValue</code> class. The second parameter is the actual list of CLI arguments, which is represented by an array of Strings in Java and by an array of <code>char*</code> in C/C++. Fortunately, there's a utility class called <code>CTypeConversion</code> for such scenarios. <code>CTypeConversion.toCStrings</code> returns a safe holder for the <code>char**</code> value representing the array, which can be used inside a try-with-resources block. Once the holder is closed, the pointer inside must not be used. We similarly set up <code>GLUT.createWindow</code>.</p><p>Next, we set up the lighting and materials that affect our scene:</p><pre><code class="lang-java">GL.clearColor(0.5f, 0.5f, 0.5f, 0f);
+GL.shadeModel(GL.SMOOTH());
+try (var white = PinnedObject.create(new float[] {1f, 1f, 1f, 0f});
+     var shine = PinnedObject.create(new float[] {70f})) {
+    GL.lightfv(GL.LIGHT0(), GL.AMBIENT(), white.addressOfArrayElement(0));
+    GL.lightfv(GL.LIGHT0(), GL.DIFFUSE(), white.addressOfArrayElement(0));
+    GL.materialfv(GL.FRONT(), GL.SHININESS(), shine.addressOfArrayElement(0));
+}
+
+GL.enable(GL.LIGHTING());
+GL.enable(GL.LIGHT0());
+GL.enable(GL.DEPTH_TEST());
+</code></pre><p>The third parameter to <code>GL.lightfv</code> and <code>GL.materialfv</code> requires a float array. Now, Java arrays cannot be directly passed here because they don't descend from <code>WordBase</code>. So we create a <code>PinnedObject</code> to represent this array and pass the pointer to its first element using <code>addressOfArrayElement(0)</code>. Pinning the array is important as it preserves the value of that pointer by preventing the garbage collector from moving it. After the pinned object is closed, the garbage collector is free to remove it.</p><p>We end our main method by setting up display and idle callbacks, and running the GLUT main loop:</p><pre><code class="lang-java">GLUT.displayFunc(displayCallback.getFunctionPointer());
+GLUT.idleFunc(idleCallback.getFunctionPointer());
+GLUT.mainLoop();
+</code></pre><p>The <code>display</code> function is used to draw the teapot, while the <code>idle</code> function updates its angle of rotation. Both are called each frame by the GLUT main loop. Right now, creating pointer to a function with specific signature is a bit tricky. This will likely become much simpler when <a href="https://github.com/oracle/graal/issues/730">issue 730</a> is resolved. Let's take a look at how the display callback is implemented here:</p><pre><code class="lang-java">@CEntryPoint
+@CEntryPointOptions(prologue = CEntryPointSetup.EnterCreateIsolatePrologue.class,
+                    epilogue = CEntryPointSetup.LeaveTearDownIsolateEpilogue.class)
+private static void display() {
+    GL.clear(GL.COLOR_BUFFER_BIT() | GL.DEPTH_BUFFER_BIT());
+
+    GL.pushMatrix();
+    GL.rotatef(rotation.get().read(), 0f, 1f, 1f);
+    try (var mat = PinnedObject.create(new float[] {1, 0, 0, 0})) {
+        GL.materialfv(GL.FRONT(), GL.DIFFUSE(), mat.addressOfArrayElement(0));
+    }
+    GLUT.wireTeapot(0.5);
+    GL.popMatrix();
+
+    GL.flush();
+}
+
+private static final CEntryPointLiteral&lt;GLUT.Callback&gt; displayCallback =
+        CEntryPointLiteral.create(Main.class, "display");
+</code></pre><p>The <code>display</code> function is annotated as a <code>@CEntryPoint</code> to allow calling it from the native side. The <code>@CEntryPointOptions</code> is used to configure the handling of <em>Isolates</em>. These are disjoint heaps that can be used to strictly separate groups of objects in memory. I won't go deeper into the topic, but you can see <a href="https://link.medium.com/0eOUY2HGI7">Christian Wimmer's post</a> for an idea. Each time such an entry-point is called, we need to take care of the isolate it will be executed in. We simply create an isolate upon entering the function and destroy it upon returning. Finally, we create a <code>CEntryPointLiteral</code> to hold the pointer to <code>display</code> and cast it as a <code>GLUT.Callback</code>.</p><p>Now we need to implement the <code>idle</code> function to update the angle of rotation. This angle is stored as an global variable whose pointer is accessible to both <code>display</code> and <code>idle</code> functions.</p><pre><code class="lang-java">private static final CGlobalData&lt;CFloatPointer&gt; rotation = 
+    CGlobalDataFactory.createBytes(() -&gt; 4);
+
+@CEntryPoint
+@CEntryPointOptions(prologue = CEntryPointSetup.EnterCreateIsolatePrologue.class,
+                    epilogue = CEntryPointSetup.LeaveTearDownIsolateEpilogue.class)
+private static void idle() {
+    var rotPtr = rotation.get();
+    rotPtr.write(0.1f + rotPtr.read());
+    GLUT.postRedisplay();
+}
+
+private static final CEntryPointLiteral&lt;GLUT.Callback&gt; idleCallback =
+        CEntryPointLiteral.create(Main.class, "idle");
+</code></pre><p>Any <code>static final</code> value is stored in a special location called the <em>Image Heap</em> and this is accessible to any isolate. We allocate 4 bytes (size of <code>float</code>) and create a pointer to this in our image heap using <code>CGlobalDataFactory</code>. This global variable can be accessed inside <code>idle</code> function to update the angle. We create a pointer to <code>idle</code> in the same way as before.</p><h2 id="results">Results</h2><p>To build the program, use the following command in the root project directory:</p><pre><code class="lang-bash">./gradlew nativeImage
+</code></pre><p>It takes a while for building. After completion, the executable can be found inside <em>build/graal/</em>. It should weigh around 6mb, and be ready for action:</p><p><img src="/img/2020/teapot.gif" alt="Demo" /></p><p>Hope you find this post interesting. If you see any mistakes in the process or you'd like to suggest an improvement, feel free to comment below. GraalVM is an incredible technology in the Java ecosystem, and it deserves a good place in native app development. 💎</p>
+</div>
+
+<div id="post-tags">
+    <b>Tags: </b>
+    
+    <a href="/tags/GraalVM/">GraalVM</a>
+    
+    <a href="/tags/OpenGL/">OpenGL</a>
+    
+    <a href="/tags/Native/">Native</a>
+    
+    <a href="/tags/Java/">Java</a>
+    
+</div>
+
+
+    <div id="prev-next">
+        
+        
+        <a class="right" href="/posts/2020/the-season-of-lockdowns/">The Season of Lockdowns &raquo;</a>
+        
+    </div>
+    
+    
+    <div id="comments">
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            var disqus_config = function () {
+                this.page.url = "https://praj.in/posts/2020/opengl-demo-using-graalvm/";
+                this.page.identifier = "OpenGL demo using GraalVM";
+            };
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//praj-in.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+    </div>
+    
+</div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>Copyright <i class="fa fa-copyright" aria-hidden="true"></i> 2020 Priyadarshi Raj
+    <p style="text-align: center;">Powered by <a href="https://cryogenweb.org">Cryogen</a></p>
+</footer>
+
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script>twemoji.parse(document.getElementById("content"));</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/components/prism-core.min.js" integrity="sha256-9h14mWYYiQGkeAKg2JtijbqApb56kgw57WN6sI6dwH0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha256-3S2PESHNt0YNL65z57WuHPHIv12fibpBDXepyCGHftw=" crossorigin="anonymous"></script>
+
+
+
+</body>
+</html>

@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-154882046-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-154882046-1');
+    </script>
+
     <meta charset="utf-8"/>
     <title>Raj&#39;s Blog</title>
     
@@ -8,7 +17,7 @@
     <meta name="keywords" content="open-source, software, gamedev, linux, software, github, java, kotlin, clojure, functional, programming">
     
     <link rel="canonical" href="https://praj.in">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Source+Sans+Pro&family=Source+Code+Pro&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
@@ -59,6 +68,17 @@
             <div id="content">
                 
 <div id="post">
+    
+    <div class="post-header">
+        <h2>OpenGL demo using GraalVM</h2>
+        <div id="post-meta">
+            
+            <div class="date">June 21, 2020</div>
+        </div>
+    </div>
+    <p>Let me show how you can use <a href="https://www.graalvm.org/">GraalVM</a> to create an OpenGL app in Java. This is made possible by the <em>native-image</em> tool that helps GraalVM produce truly native binaries capable of interacting with native libraries directly, without any JNI overhead. ⚡️</p>
+    <a href="/posts/2020/opengl-demo-using-graalvm/">Continue reading &#8594;</a>
+    <hr>
     
     <div class="post-header">
         <h2>The Season of Lockdowns</h2>
@@ -135,17 +155,6 @@
     </div>
     <p>A long-standing bug was fixed this week. This had been the cause of <a href="http://jenkins.terasology.org/view/Launcher/job/TerasologyLauncherPRs/114/testReport/">a test failure</a> in <em>TerasologyLauncherPRs</em> job of <a href="http://jenkins.terasology.org/">our Jenkins</a>, for almost as long as a month. Also did a few tweaks on the Package Manager API, along with a diagram for my initial plan.</p>
     <a href="/posts/2019/gsoc-2019-week-7-updates/">Continue reading &#8594;</a>
-    <hr>
-    
-    <div class="post-header">
-        <h2>GSoC 2019: Week 6 updates</h2>
-        <div id="post-meta">
-            
-            <div class="date">July 8, 2019</div>
-        </div>
-    </div>
-    <p>This week was devoted to design and development of the new package manager, another flagship feature for the Launcher's upcoming release.</p>
-    <a href="/posts/2019/gsoc-2019-week-6-updates/">Continue reading &#8594;</a>
     <hr>
     
 
