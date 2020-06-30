@@ -13,7 +13,7 @@ code, pre {
 	font-family: 'Source Code Pro', Consolas, Monaco, 'Ubuntu Mono', monospace;
 	font-size: 1em;
 	text-align: left;
-	white-space: pre;
+	white-space: pre !important;
 	word-spacing: normal;
 	word-break: normal;
 	word-wrap: normal;
