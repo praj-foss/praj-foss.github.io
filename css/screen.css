@@ -119,10 +119,18 @@ body {
 footer a,
 footer a:hover {
     color: var(--prim-0);
+    text-decoration: none;
 }
 
 #content a:hover {
     color: var(--prim-1);
+}
+
+#content h2 > a {
+    color: var(--light-0);
+}
+#content h2 > a:hover {
+    color: var(--prim-0);
 }
 
 #content img:not(.emoji) {
