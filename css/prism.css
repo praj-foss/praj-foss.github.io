@@ -33,15 +33,15 @@ code, pre {
 pre {
 	font-size: 0.925em;
 	padding: 1em;
-	margin: .5em 0;
+	margin: 1em 0;
 	overflow: auto;
 }
 
 /* Inline code */
 :not(pre) > code {
 	color: var(--prim-1);
-	font-size: 0.925em;
-	padding: .1em .5em;
+	font-size: 0.875em;
+	padding: 0.1em 0.5em;
 	border-radius: 4px;
 	white-space: normal;
 }
