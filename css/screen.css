@@ -167,7 +167,17 @@ blockquote footer {
 }
 
 #prev-next {
-    padding: 15px 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0.5em 0;
+}
+#prev-next > #prev {
+    margin: 0.3em 0;
+    margin-right: auto;
+}
+#prev-next > #next {
+    margin: 0.3em 0;
+    margin-left: auto;
 }
 
 .post-header {
