@@ -70,13 +70,24 @@
 <div id="post">
     
     <div class="post-header">
+        <h2><a href="/posts/2020/calling-uname-from-java-using-graalvm/">Calling uname from Java using GraalVM</a></h2>
+        <div id="post-meta">
+            
+            <div class="date">August 21, 2020</div>
+        </div>
+    </div>
+    <p>For years I'd been searching how to build native Linux apps using Java and somehow <a href="https://www.graalvm.org/">GraalVM</a> has concluded it all. GraalVM's native-image tooling is arguably the most elegant way of connecting Java to the native world. We'll be exploring a clean way to interoperate with C libraries by writing a <a href="https://en.wikipedia.org/wiki/Uname">uname</a> alternative in pure Java. No JNI mess, no <code>sun.misc.Unsafe</code> imports, just GraalVM. 🛠️</p>
+    <a href="/posts/2020/calling-uname-from-java-using-graalvm/">Continue reading &rarr;</a>
+    <hr>
+    
+    <div class="post-header">
         <h2><a href="/posts/2020/zimbra-mailbot-update-1/">Zimbra Mailbot: Update 1</a></h2>
         <div id="post-meta">
             
             <div class="date">August 13, 2020</div>
         </div>
     </div>
-    <p>My college exclusively uses Zimbra 8 as its mail server and the most annoying part is that there's no easy way to fetch new emails automatically (unlike the Gmail app). The unavailability of any official Android app only makes it worse. So it's been a while since I started working on <a href="https://github.com/praj-foss/zimbramailbot">this chatbot</a> that can forward emails from any Zimbra account to Telegram. On a side note, it's also helping me sharpen my Clojure skills for web dev.</p>
+    <p>My college exclusively uses Zimbra 8 as its mail server and the most annoying part is that there's no easy way to fetch new emails automatically (unlike Gmail app). The unavailability of any official Android app only makes it worse. So it's been a while since I started working on <a href="https://github.com/praj-foss/zimbramailbot">this chatbot</a> that can forward emails from any Zimbra account to Telegram. On a side note, it's also helping me sharpen my Clojure skills for web dev.</p>
     <a href="/posts/2020/zimbra-mailbot-update-1/">Continue reading &rarr;</a>
     <hr>
     
@@ -144,17 +155,6 @@
     </div>
     <p>The penultimate week of GSoC was filled with architectural designs and discussions. I've spent a good amount of time researching on <em>apt</em>, <em>pacman</em> and <em>npm</em>, and along with the lessons learned from the previous Package Manager implementation, we're planning out an improved design for making the Package Manager more extensible and robust.</p>
     <a href="/posts/2019/gsoc-2019-week-11-updates/">Continue reading &rarr;</a>
-    <hr>
-    
-    <div class="post-header">
-        <h2><a href="/posts/2019/gsoc-2019-week-10-updates/">GSoC 2019: Week 10 updates</a></h2>
-        <div id="post-meta">
-            
-            <div class="date">August 7, 2019</div>
-        </div>
-    </div>
-    <p>Alright! The last month is half done, and this week brings some more updates to the Package Manager. The integration is ready to be tested and is almost working just the way it used to, along with the invisible Package Manager underneath. Though it only supports storing and loading of cache now, future PRs should bring full powers to it: installation, uninstallation, etc.</p>
-    <a href="/posts/2019/gsoc-2019-week-10-updates/">Continue reading &rarr;</a>
     <hr>
     
 

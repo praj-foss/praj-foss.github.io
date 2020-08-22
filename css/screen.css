@@ -144,6 +144,18 @@ footer a:hover {
     border-radius: 4px;
 }
 
+#content th,
+#content td {
+    padding: 1px 8px;
+}
+#content th {
+    background-color: var(--dark-2);
+}
+#content table {
+    border: solid 2px var(--dark-2);
+    margin: 1em 0px;
+}
+
 footer {
     margin-top: auto;
     background-color: var(--dark-1);
