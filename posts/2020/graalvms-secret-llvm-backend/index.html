@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-154882046-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-154882046-1');
+    </script>
+
+    <meta charset="utf-8"/>
+    <title>Raj&#39;s Blog: GraalVM&#39;s secret LLVM backend</title>
+    
+<meta name="keywords" content="Telegram,Non Tech,GraalVM,Web Dev,Packaging,LLVM,SWT,ModiTect,Zimbra Mailbot,Unix,Clojure,OpenGL,Native,GSoC,Java,Gradle,Terasology">
+
+<meta name="description" content="You might have come across GraalVM&#39;s LLVM interpreter lli but did you know that it can also output LLVM bitcode too? Welp, maybe it isn&#39;t a secret anymore but GraalVM has an experimental backend that can build native images using LLVM instead of Graal. Let&#39;s have a quick demo.">
+
+<meta property="og:description" content="You might have come across GraalVM&#39;s LLVM interpreter lli but did you know that it can also output LLVM bitcode too? Welp, maybe it isn&#39;t a secret anymore but GraalVM has an experimental backend that can build native images using LLVM instead of Graal. Let&#39;s have a quick demo.">
+
+<meta property="og:url" content="https://praj.in/posts/2020/graalvms-secret-llvm-backend/" />
+<meta property="og:title" content="GraalVM&#39;s secret LLVM backend" />
+<meta property="og:type" content="article" />
+
+    <link rel="canonical" href="https://praj.in/posts/2020/graalvms-secret-llvm-backend/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Source+Sans+Pro&family=Source+Code+Pro&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+
+    <link href="/css/screen.css" rel="stylesheet" type="text/css" />
+    <link href="/css/prism.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Raj&#39;s Blog</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li
+                >
+                <a href="/about/">About</a>
+                </li>
+                
+                <li
+                >
+                <a href="/projects/">Projects</a>
+                </li>
+                
+                <li ><a href="/archives/">Archives</a></li>
+                <li><a href="/feed.xml"><i class="fa fa-rss" aria-hidden="true"></i></a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div><!--/.container-fluid -->
+</nav>
+
+
+<div id="holder" class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="content">
+                
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta" class="row">
+        <div class="col-lg-6">20 September 2020</div>
+        
+    </div>
+    <h2>GraalVM&#39;s secret LLVM backend</h2>
+</div>
+<div>
+    
+    <p>You might have come across GraalVM's LLVM interpreter <code>lli</code> but did you know that it can also output LLVM bitcode too? Welp, maybe it isn't a secret anymore but GraalVM has an experimental backend that can build native images using LLVM instead of Graal. Let's have a quick demo.</p><!-- more --><h2 id="background">Background</h2><p>The primary job of a compiler is to take chunks of code in one format and translate it into another. When we run <code>javac</code> we're compiling Java source code into Java bytecode. GraalVM is based on the <a href="https://openjdk.java.net/projects/graal/">Graal compiler</a> which converts Java bytecode into native machine code just-in-time (JIT). When we run <code>native-image</code>, Graal is run ahead-of-time (AOT) to compile the Java program into native binaries. LLVM is a powerful framework used to build both JIT and AOT compilers. Languages like Rust, Swift, and Haskell are all powered by LLVM.</p><p>From a top view, both GraalVM and LLVM roughly operate in two parts: A <em>frontend</em> that converts source code to some <em>intermediate representation</em> (IR) and a <em>backend</em> that converts this IR into the desired output. Here's an example of LLVM compilation:
+<img src="/img/2020/llvm-compiler.png" alt="llvm" /></p><p>This IR allows multiple backends and frontends to interoperate freely on the LLVM toolchain. Traditional JVMs, as well as GraalVM, have been using the same concept to support multiple languages. Given below is a similar diagram for GraalVM:
+<img src="/img/2020/graalvm-compiler.png" alt="graalvm" /></p><p>One remarkable thing here is how GraalVM includes both a frontend and backend for LLVM bitcode. The frontend, called <a href="https://github.com/oracle/graal/tree/master/sulong">Sulong</a>, adds support for executing the bitcode. This, in turn, makes it possible for any program compiled to LLVM bitcode to be executed on GraalVM, allowing easy interoperation with other supported languages.</p><p>The LLVM backend is what this blog post is about. It's a part of <code>native-image</code> toolkit and is highly experimental. One use-case of this is to allow AOT compilation of Java bytecode for the various architectures supported by LLVM.</p><h2 id="demo">Demo</h2><p>If you haven't downloaded GraalVM before, get the latest release from <a href="https://github.com/graalvm/graalvm-ce-builds/releases">here</a>. If you're a <a href="https://github.com/palantir/gradle-graal">gradle-graal plugin</a> user like me, you probably have GraalVM downloaded already. So I'll simply reuse the GraalVM cached on my Linux, and set up a variable for convenience:</p><pre><code>export GRAALVM=~/.gradle/caches/com.palantir.graal/20.2.0/11/graalvm-ce-java11-20.2.0/bin
+</code></pre><p>Install <code>native-image</code> and LLVM toolchain if you haven't done it before:</p><pre><code>$GRAALVM/gu install native-image llvm-toolchain
+</code></pre><p>Let's start with the good ol' Hello world ☀️</p><pre><code>echo "public class Hello { \
+ public static void main(String[] args) { \
+ System.out.println(\"Hello world\"); }}" &gt; Hello.java
+
+$GRAALVM/javac Hello.java
+</code></pre><p>For the final part, we need to prepare a temporary directory and run <code>native-image</code> with some specific options:</p><pre><code>mkdir temp
+
+$GRAALVM/native-image \
+ -H:CompilerBackend=llvm \
+ -H:Features=org.graalvm.home.HomeFinderFeature \
+ -H:TempDirectory=temp Hello
+</code></pre><p>If it runs successfully you should have a <code>hello</code> binary ready. It's larger than usual native images at around <strong>18 MB</strong> and is self-contained. Let's have a look at the generated LLVM files dumped inside <code>temp</code> directory:</p><pre><code>ls -lU temp/SVM-*/llvm | less
+</code></pre><p>You can see the thousands of bitcode files (<em>*.bc</em>) generated by Graal. Most of these are runtime utilities for garbage collection, thread management, etc. which are collectively known as <strong>SubstrateVM</strong>. As of the time of writing, there weren't enough resources on this backend apart from <a href="https://github.com/oracle/graal/blob/24fe0c62c92b8cf9455126124d89315e207aaae6/substratevm/LLVMBackend.md">the readme</a>. Welp, if you're interested in LLVM, I hope you'll have a good time fiddling around.</p><p>🛠️</p>
+</div>
+
+<div id="post-tags">
+    <b>Tags: </b>
+    
+    <a href="/tags/GraalVM/">GraalVM</a>
+    
+    <a href="/tags/LLVM/">LLVM</a>
+    
+    <a href="/tags/Native/">Native</a>
+    
+    <a href="/tags/Java/">Java</a>
+    
+</div>
+
+
+    <div id="prev-next">
+        
+        
+        <a id="next" href="/posts/2020/calling-uname-from-java-using-graalvm/">Calling uname from Java using GraalVM &rarr;</a>
+        
+    </div>
+    
+    
+    <div id="comments">
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            var disqus_config = function () {
+                this.page.url = "https://praj.in/posts/2020/graalvms-secret-llvm-backend/";
+                this.page.identifier = "GraalVM&#39;s secret LLVM backend";
+            };
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//praj-in.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+    </div>
+    
+</div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>Copyright <i class="fa fa-copyright" aria-hidden="true"></i> 2020 Priyadarshi Raj
+    <p style="text-align: center;">Powered by <a href="https://cryogenweb.org">Cryogen</a></p>
+</footer>
+
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script>twemoji.parse(document.getElementById("content"));</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/components/prism-core.min.js" integrity="sha256-9h14mWYYiQGkeAKg2JtijbqApb56kgw57WN6sI6dwH0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha256-3S2PESHNt0YNL65z57WuHPHIv12fibpBDXepyCGHftw=" crossorigin="anonymous"></script>
+
+
+
+</body>
+</html>
