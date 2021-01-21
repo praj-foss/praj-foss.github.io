@@ -1,6 +1,11 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<html lang="en">
 <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Priyadarshi Raj</title>
+    <link rel="canonical" href="https://www.praj.in">
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-154882046-1"></script>
     <script>
@@ -9,182 +14,166 @@
         gtag('js', new Date());
         gtag('config', 'UA-154882046-1');
     </script>
-
-    <meta charset="utf-8"/>
-    <title>Raj&#39;s Blog</title>
     
-    <meta name="description" content="I&#39;m a computer science student and an open-source software developer enthusiastic about game development, linux and functional programming.">
-    <meta name="keywords" content="open-source, software, gamedev, linux, software, github, java, kotlin, clojure, functional, programming">
+    <meta name="description" content="I&#39;m a computer science undergrad and a passionate software craftsman">
+    <meta name="keywords" content="">
     
-    <link rel="canonical" href="https://praj.in">
-    <meta name="viewport" content="width=device-width, initial-scale=1">    
-
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Source+Sans+Pro&family=Source+Code+Pro&display=swap" rel="stylesheet"> 
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
-
-    <link href="/css/screen.css" rel="stylesheet" type="text/css" />
+    <script src="//cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="preconnect" href="//fonts.gstatic.com">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Raleway:wght@300;400;600&display=swap">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
     <link href="/css/prism.css" rel="stylesheet" type="text/css" />
+    <link href="/css/style.css" rel="stylesheet" type="text/css" />
+    <script src="/js/main.js"></script>
 </head>
 <body>
-
-
-<nav class="navbar navbar-default">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">Raj&#39;s Blog</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
+    <div id="sidebar">
+        <div class="intro">
+            <h5 class="brand"><a href="/" class="white-link">Priyadarshi Raj</a></h5>
+            <img id="avatar" src="/img/avatar.jpg" alt="avatar">
+            <p class="about">I&#39;m a computer science undergrad and a passionate software craftsman</p>
+            <nav>
+                <a href="/" >Home</a>
                 
-                <li
-                >
-                <a href="/about/">About</a>
-                </li>
+                <a href="/about/" >About</a>
                 
-                <li
-                >
-                <a href="/projects/">Projects</a>
-                </li>
+                <a href="/projects/" >Projects</a>
                 
-                <li ><a href="/archives/">Archives</a></li>
-                <li><a href="/feed.xml"><i class="fa fa-rss" aria-hidden="true"></i></a></li>
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div><!--/.container-fluid -->
-</nav>
+                <a href="/archives/" >Archives</a>
+            </nav>
+        </div>
+        <div class="social">
+            <a href="https://github.com/praj-foss"><i data-feather="github"></i></a>
+            <a href="https://www.linkedin.com/in/priyadarshi-raj-740783197/"><i data-feather="linkedin"></i></a>
+            <a href="https://twitter.com/praj_foss"><i data-feather="twitter"></i></a>
+            <a href="/feed.xml"><i data-feather="rss"></i></a>
+        </div>
+    </div>
+    <script>checkSidebar();</script>
 
+    <main>
+        <header>
+            <h4 class="brand"><a href="/" class="white-link">Priyadarshi Raj</a></h4>
+        </header>
+        <div class="container"> 
+            
 
-<div id="holder" class="container">
-    <div class="row">
-        <div class="col-lg-12">
-            <div id="content">
-                
-<div id="post">
-    
+<div class="card">
     <div class="post-header">
-        <h2><a href="/posts/2019/gsoc-2019-week-11-updates/">GSoC 2019: Week 11 updates</a></h2>
-        <div id="post-meta">
-            
-            <div class="date">13 August 2019</div>
-        </div>
+        <h2><a href="/posts/2019/gsoc-2019-week-11-updates/" class="white-link">GSoC 2019: Week 11 updates</a></h2>
+        <p class="date">August 13, 2019</p>
     </div>
-    <p>The penultimate week of GSoC was filled with architectural designs and discussions. I've spent a good amount of time researching on <em>apt</em>, <em>pacman</em> and <em>npm</em>, and along with the lessons learned from the previous Package Manager implementation, we're planning out an improved design for making the Package Manager more extensible and robust.</p>
-    <a href="/posts/2019/gsoc-2019-week-11-updates/">Continue reading &rarr;</a>
-    <hr>
-    
-    <div class="post-header">
-        <h2><a href="/posts/2019/gsoc-2019-week-10-updates/">GSoC 2019: Week 10 updates</a></h2>
-        <div id="post-meta">
-            
-            <div class="date">7 August 2019</div>
-        </div>
-    </div>
-    <p>Alright! The last month is half done, and this week brings some more updates to the Package Manager. The integration is ready to be tested and is almost working just the way it used to, along with the invisible Package Manager underneath. Though it only supports storing and loading of cache now, future PRs should bring full powers to it: installation, uninstallation, etc.</p>
-    <a href="/posts/2019/gsoc-2019-week-10-updates/">Continue reading &rarr;</a>
-    <hr>
-    
-    <div class="post-header">
-        <h2><a href="/posts/2019/gsoc-2019-week-9-updates/">GSoC 2019: Week 9 updates</a></h2>
-        <div id="post-meta">
-            
-            <div class="date">1 August 2019</div>
-        </div>
-    </div>
-    <p>So the first week of our third phase, finally came to an end. Almost the entire week was dedicated to the package manager, and it's still far from being complete. But the launcher no longer crashes or freezes while starting up with it, and that's a relieving thing to see.</p>
-    <a href="/posts/2019/gsoc-2019-week-9-updates/">Continue reading &rarr;</a>
-    <hr>
-    
-    <div class="post-header">
-        <h2><a href="/posts/2019/gsoc-2019-week-8-updates/">GSoC 2019: Week 8 updates</a></h2>
-        <div id="post-meta">
-            
-            <div class="date">27 July 2019</div>
-        </div>
-    </div>
-    <p>This was quite a terrible week for me. I had to be inactive because of some serious, untimely issues. I also had to shift to my college's city, as classes were about to restart. So there's no contribution to show in this update. I'll try to make up for the lost time in the upcoming week and take care of the package manager.</p><p>Thanks for bearing with me all along.</p>
-    <a href="/posts/2019/gsoc-2019-week-8-updates/">Continue reading &rarr;</a>
-    <hr>
-    
-    <div class="post-header">
-        <h2><a href="/posts/2019/gsoc-2019-week-7-updates/">GSoC 2019: Week 7 updates</a></h2>
-        <div id="post-meta">
-            
-            <div class="date">27 July 2019</div>
-        </div>
-    </div>
-    <p>A long-standing bug was fixed this week. This had been the cause of <a href="http://jenkins.terasology.org/view/Launcher/job/TerasologyLauncherPRs/114/testReport/">a test failure</a> in <em>TerasologyLauncherPRs</em> job of <a href="http://jenkins.terasology.org/">our Jenkins</a>, for almost as long as a month. Also did a few tweaks on the Package Manager API, along with a diagram for my initial plan.</p>
-    <a href="/posts/2019/gsoc-2019-week-7-updates/">Continue reading &rarr;</a>
-    <hr>
-    
-    <div class="post-header">
-        <h2><a href="/posts/2019/gsoc-2019-week-6-updates/">GSoC 2019: Week 6 updates</a></h2>
-        <div id="post-meta">
-            
-            <div class="date">8 July 2019</div>
-        </div>
-    </div>
-    <p>This week was devoted to design and development of the new package manager, another flagship feature for the Launcher's upcoming release.</p>
-    <a href="/posts/2019/gsoc-2019-week-6-updates/">Continue reading &rarr;</a>
-    <hr>
-    
-    <div class="post-header">
-        <h2><a href="/posts/2019/gsoc-2019-week-5-updates/">GSoC 2019: Week 5 updates</a></h2>
-        <div id="post-meta">
-            
-            <div class="date">2 July 2019</div>
-        </div>
-    </div>
-    <p>The first phase of GSoC came to an end with a month full of awesome experiences. This last week of June had seen works on the new, dedicated project for producing customized runtime for bundling along with the launcher.</p>
-    <a href="/posts/2019/gsoc-2019-week-5-updates/">Continue reading &rarr;</a>
-    <hr>
-    
-    <div class="post-header">
-        <h2><a href="/posts/2019/gsoc-2019-week-4-updates/">GSoC 2019: Week 4 updates</a></h2>
-        <div id="post-meta">
-            
-            <div class="date">28 June 2019</div>
-        </div>
-    </div>
-    <p>A much-anticipated feature was successfully implemented this week - <strong>bundled JRE</strong>. Gradle now automatically bundles any given JRE with the generated application package.</p>
-    <a href="/posts/2019/gsoc-2019-week-4-updates/">Continue reading &rarr;</a>
-    <hr>
-    
-
-    <div id="prev-next">
-        
-        <a id="prev" href="/">&larr; Previous</a>
-        
-        
-        <a id="next" href="/p/3/">Next &rarr;</a>
-        
-    </div>
+    <div class="post-content">
+        <p>The penultimate week of GSoC was filled with architectural designs and discussions. I've spent a good amount of time researching on <em>apt</em>, <em>pacman</em> and <em>npm</em>, and along with the lessons learned from the previous Package Manager implementation, we're planning out an improved design for making the Package Manager more extensible and robust. <!-- more --></p>
+    </div>    
+    <a href="/posts/2019/gsoc-2019-week-11-updates/" class="button">Continue reading</a>
 </div>
 
-            </div>
-        </div>
+<div class="card">
+    <div class="post-header">
+        <h2><a href="/posts/2019/gsoc-2019-week-10-updates/" class="white-link">GSoC 2019: Week 10 updates</a></h2>
+        <p class="date">August 7, 2019</p>
     </div>
+    <div class="post-content">
+        <p>Alright! The last month is half done, and this week brings some more updates to the Package Manager. The integration is ready to be tested and is almost working just the way it used to, along with the invisible Package Manager underneath. Though it only supports storing and loading of cache now, future PRs should bring full powers to it: installation, uninstallation, etc. <!-- more --></p>
+    </div>    
+    <a href="/posts/2019/gsoc-2019-week-10-updates/" class="button">Continue reading</a>
 </div>
 
-<footer>Copyright <i class="fa fa-copyright" aria-hidden="true"></i> 2020 Priyadarshi Raj
-    <p style="text-align: center;">Powered by <a href="https://cryogenweb.org">Cryogen</a></p>
-</footer>
+<div class="card">
+    <div class="post-header">
+        <h2><a href="/posts/2019/gsoc-2019-week-9-updates/" class="white-link">GSoC 2019: Week 9 updates</a></h2>
+        <p class="date">August 1, 2019</p>
+    </div>
+    <div class="post-content">
+        <p>So the first week of our third phase, finally came to an end. Almost the entire week was dedicated to the package manager, and it's still far from being complete. But the launcher no longer crashes or freezes while starting up with it, and that's a relieving thing to see. <!-- more --></p>
+    </div>    
+    <a href="/posts/2019/gsoc-2019-week-9-updates/" class="button">Continue reading</a>
+</div>
 
-<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script>twemoji.parse(document.getElementById("content"));</script>
+<div class="card">
+    <div class="post-header">
+        <h2><a href="/posts/2019/gsoc-2019-week-8-updates/" class="white-link">GSoC 2019: Week 8 updates</a></h2>
+        <p class="date">July 27, 2019</p>
+    </div>
+    <div class="post-content">
+        <p>This was quite a terrible week for me. I had to be inactive because of some serious, untimely issues. I also had to shift to my college's city, as classes were about to restart. So there's no contribution to show in this update. I'll try to make up for the lost time in the upcoming week and take care of the package manager. <!-- more --></p>
+    </div>    
+    <a href="/posts/2019/gsoc-2019-week-8-updates/" class="button">Continue reading</a>
+</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/components/prism-core.min.js" integrity="sha256-9h14mWYYiQGkeAKg2JtijbqApb56kgw57WN6sI6dwH0=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha256-3S2PESHNt0YNL65z57WuHPHIv12fibpBDXepyCGHftw=" crossorigin="anonymous"></script>
+<div class="card">
+    <div class="post-header">
+        <h2><a href="/posts/2019/gsoc-2019-week-7-updates/" class="white-link">GSoC 2019: Week 7 updates</a></h2>
+        <p class="date">July 27, 2019</p>
+    </div>
+    <div class="post-content">
+        <p>A long-standing bug was fixed this week. This had been the cause of <a href="http://jenkins.terasology.org/view/Launcher/job/TerasologyLauncherPRs/114/testReport/">a test failure</a> in <em>TerasologyLauncherPRs</em> job of <a href="http://jenkins.terasology.org/">our Jenkins</a>, for almost as long as a month. Also did a few tweaks on the Package Manager API, along with a diagram for my initial plan. <!-- more --></p>
+    </div>    
+    <a href="/posts/2019/gsoc-2019-week-7-updates/" class="button">Continue reading</a>
+</div>
+
+<div class="card">
+    <div class="post-header">
+        <h2><a href="/posts/2019/gsoc-2019-week-6-updates/" class="white-link">GSoC 2019: Week 6 updates</a></h2>
+        <p class="date">July 8, 2019</p>
+    </div>
+    <div class="post-content">
+        <p>This week was devoted to design and development of the new package manager, another flagship feature for the Launcher's upcoming release.<!-- more --></p>
+    </div>    
+    <a href="/posts/2019/gsoc-2019-week-6-updates/" class="button">Continue reading</a>
+</div>
+
+<div class="card">
+    <div class="post-header">
+        <h2><a href="/posts/2019/gsoc-2019-week-5-updates/" class="white-link">GSoC 2019: Week 5 updates</a></h2>
+        <p class="date">July 2, 2019</p>
+    </div>
+    <div class="post-content">
+        <p>The first phase of GSoC came to an end with a month full of awesome experiences. This last week of June had seen works on the new, dedicated project for producing customized runtime for bundling along with the launcher. <!-- more --></p>
+    </div>    
+    <a href="/posts/2019/gsoc-2019-week-5-updates/" class="button">Continue reading</a>
+</div>
+
+<div class="card">
+    <div class="post-header">
+        <h2><a href="/posts/2019/gsoc-2019-week-4-updates/" class="white-link">GSoC 2019: Week 4 updates</a></h2>
+        <p class="date">June 28, 2019</p>
+    </div>
+    <div class="post-content">
+        <p>A much-anticipated feature was successfully implemented this week - <strong>bundled JRE</strong>. Gradle now automatically bundles any given JRE with the generated application package. <!-- more --></p>
+    </div>    
+    <a href="/posts/2019/gsoc-2019-week-4-updates/" class="button">Continue reading</a>
+</div>
 
 
+<div class="pagenav">
+    
+    <a href="/">&#9668; Previous</a>
+    
+    <div class="expand"></div>
+    
+    <a href="/p/3/">Next &#9658;</a>
+    
+</div>
 
+
+        </div>
+        <footer>Copyright &copy; 2019 - 2021 Priyadarshi Raj</footer>
+    </main>
+
+    <div class="panel">
+        <button id="button-home" class="panel-button" onclick="gotoPage(this)" data-href="/"><i data-feather="home"></i></button>
+        <button id="button-share" class="panel-button" onclick="gotoPage(this)" data-href="/about"><i data-feather="user"></i></button>
+        <button id="button-top" class="panel-button" onclick="gotoTop()"><i data-feather="arrow-up-circle"></i></button>
+        <button id="button-menu" class="panel-button" onclick="toggleMenu()"><i id="icon-menu" data-feather="menu"></i><i id="icon-close" class="hidden" data-feather="x"></i></button>
+    </div>
+    <script>
+        feather.replace();
+        twemoji.parse(document.getElementsByClassName("container")[0]);
+    </script>
+    <script src="/js/prism.js"></script>
 </body>
 </html>

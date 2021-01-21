@@ -1,23 +1,23 @@
-/* PrismJS 1.20.0
-https://prismjs.com/download.html#themes=prism-tomorrow&languages=clike+clojure+java */
+/* PrismJS 1.23.0
+https://prismjs.com/download.html#themes=prism-tomorrow&languages=clike+bash+c+clojure+java+kotlin+shell-session */
 /**
  * prism.js tomorrow night eighties for JavaScript, CoffeeScript, CSS and HTML
  * Based on https://github.com/chriskempson/tomorrow-theme
  * @author Rose Pritchard
  */
 
-code, pre {
-	color: var(--light-0);
-	background-color: var(--dark-0);
-	border-width: 0px;
-	font-family: 'Source Code Pro', Consolas, Monaco, 'Ubuntu Mono', monospace;
+code[class*="language-"],
+pre[class*="language-"] {
+	color: #ccc;
+	background: none;
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 	font-size: 1em;
 	text-align: left;
-	white-space: pre !important;
+	white-space: pre;
 	word-spacing: normal;
 	word-break: normal;
 	word-wrap: normal;
-	line-height: 1.4em;
+	line-height: 1.5;
 
 	-moz-tab-size: 4;
 	-o-tab-size: 4;
@@ -27,22 +27,25 @@ code, pre {
 	-moz-hyphens: none;
 	-ms-hyphens: none;
 	hyphens: none;
+
 }
 
 /* Code blocks */
-pre {
-	font-size: 0.925em;
+pre[class*="language-"] {
 	padding: 1em;
-	margin: 1em 0;
+	margin: .5em 0;
 	overflow: auto;
 }
 
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+	background: #2d2d2d;
+}
+
 /* Inline code */
-:not(pre) > code {
-	color: var(--prim-1);
-	font-size: 0.875em;
-	padding: 0.1em 0.5em;
-	border-radius: 4px;
+:not(pre) > code[class*="language-"] {
+	padding: .1em;
+	border-radius: .3em;
 	white-space: normal;
 }
 

@@ -1,0 +1,355 @@
+/* COMMON */
+:root {
+    --sidebar-width: 22rem;
+    --panel-height: 4rem;
+    --white-1: #FFFAEB;
+    --white-2: #A1947D;
+    --black-1: #2B2927;
+    --black-2: #201F1D;
+    --black-3: #151513;
+    --black-4: #0B0A0A;
+
+    --orange-1: #EE7444;
+    --orange-2: #BB4111;
+}
+
+html, body {
+    height: 100%;
+}
+
+a {
+    text-decoration: none;
+    color: var(--orange-2);
+}
+a.white-link {
+    color: var(--white-1);
+}
+a:hover, a:active, a.active {
+    color: var(--orange-1);
+}
+
+body {
+    background-color: var(--black-3);
+    color: var(--white-1);
+}
+
+code {
+    background-color: var(--black-3);
+    border-width: 0;
+    overflow-x: auto;
+}
+
+p, tbody, li {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+}
+
+ul {
+    list-style: disc outside;
+    padding-left: 5rem;
+}
+ol {
+    list-style-position: outside;
+    padding-left: 5rem;
+}
+li {
+    margin-bottom: 0.75rem;
+}
+
+table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.button {
+    padding: 0 2rem;
+    color: var(--orange-2);
+    border-color: var(--orange-2);
+}
+.button:hover, .button:active {
+    color: var(--orange-1);
+    border-color: var(--orange-1);
+}
+
+/* SIDEBAR */
+#sidebar {
+    display: flex;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: calc(100% - var(--panel-height));
+    width: 100%;
+    z-index: 10;
+    overflow-x: hidden;
+    padding: 1rem;
+
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: var(--black-1);
+    color: var(--white-1);
+}
+
+.intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.brand {
+    margin: 1.5rem 0;
+    text-align: center;
+    font-weight: 600;
+}
+
+#avatar {
+    box-sizing: border-box;
+    max-width: 13rem;
+    border-radius: 50%;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 0 10px var(--black-4);
+}
+
+.intro .about {
+    text-align: center;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    max-width: 90%;
+    margin-bottom: 2rem;
+}
+
+nav {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+}
+
+nav a {
+    text-align: center;
+    margin: 0.4rem 0;
+    font-weight: 600;
+    font-size: 1.75rem;
+}
+
+.social a {
+    margin: 0 0.8rem;
+}
+
+/* CENTRAL */
+main {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header {
+    width: 100%;
+    flex-shrink: 0;
+    background-color: var(--black-1);
+    box-shadow: 0 0 12px var(--black-4);
+}
+header .brand {
+    margin: 1rem 0;
+}
+
+footer {
+    flex-shrink: 0;
+    width: 100%;
+    text-align: center;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    margin: 1rem 0 calc(1.2rem + var(--panel-height)) 0;
+}
+
+.container {
+    padding: 0;
+    flex: 1 0 auto;
+}
+
+.card {
+    margin: 3rem 0;
+    padding: 1.4rem;
+    background-color: var(--black-2);
+    box-shadow: 0 0 10px var(--black-4);
+}
+
+.pagenav {
+    display: flex;
+    font-family: 'Lato', sans-serif;
+    justify-content: space-between;
+}
+.pagenav-center {
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+    margin-top: 1rem;
+}
+.pagenav-center a {
+    text-align: center;
+}
+.container > .pagenav {
+    margin: 0 1.4rem 2rem 1.4rem;
+}
+
+.expand {
+    flex-grow: 1;
+}
+
+/* POST */
+.post-header h2 {
+    margin-bottom: 0.8rem;
+}
+.post-header p {
+    color: var(--white-2);
+    margin-bottom: 2rem;
+}
+
+.post-content img:not(.emoji) {
+    display: block;
+    box-sizing: border-box;
+    max-width: 100%;
+    margin: 0 auto;
+    background-color: var(--black-3);
+    box-shadow: 0 0 10px var(--black-4);
+}
+
+img.emoji {
+    max-height: 1.1em;
+    margin: 0 0.25em -0.1em 0.25em;
+}
+
+.post-tags {
+    display: flex;
+    flex-wrap: wrap;
+}
+.post-tags a {
+    margin-right: 1rem;
+}
+.post-tags a:last-child {
+    margin-right: 0;
+}
+
+/* PANEL */
+.panel {
+    position: fixed;
+    bottom: 0;
+    height: var(--panel-height);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    z-index: 5;
+    background-color: var(--black-1);
+    box-shadow: 0 0 10px var(--black-4);
+}
+
+.panel-button, 
+.panel-button:focus,
+.panel-button:hover {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0 1rem;
+    height: 100%;
+    border-width: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: var(--white-1);
+}
+
+.panel .disabled {
+    color: var(--white-2);
+}
+
+.panel-button .feather {
+    stroke-width: 1;
+    width: 2rem;
+    height: 2rem;
+}
+
+
+/* RESPONSIVE */
+@media (min-width: 400px) {
+    .container {
+        width: 92.5%;
+    }
+    .card {
+        border-radius: 4px;
+        padding: 1.6rem 1.8rem;
+    }
+    .container > .pagenav {
+        margin: 0 0 2rem 0;
+    }
+}
+
+@media (min-width: 550px) {
+    .container {
+        width: 85%;
+    }
+    .card {
+        padding: 2rem 3rem;
+    }    
+}
+
+@media (min-width: 750px) {
+    #sidebar {
+        height: 100%;
+        width: var(--sidebar-width);
+        box-shadow: 0 0 12px var(--black-4);
+        justify-content: space-between;
+    }
+
+    header, .panel {
+        display: none;
+    }
+
+    main {
+        margin-left: var(--sidebar-width);
+    }
+
+    .container {
+        width: 90%;
+    }
+
+    footer {
+        margin: 1rem 0 1.2rem 0;
+    }
+}
+
+@media (min-width: 1000px) {
+    .container {
+        width: 85%;
+    }
+
+    .card {
+        border-radius: 4px;
+        padding: 5rem 7rem 3rem 7rem;
+    }
+}
+
+/* PRISM */
+code[class*="language-"],
+pre[class*="language-"] {
+    color: var(--white-1);
+}
+pre[class*="language-"] {
+    padding: 0.3em;
+    margin: 0 0 2.5rem 0;
+}
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+	background: var(--black-3);
+}
+
+/* UTIL */
+.hidden {
+    display: none !important;
+}
+
+.noscroll {
+    overflow: hidden !important;
+}

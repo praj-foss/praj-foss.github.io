@@ -1,6 +1,11 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<html lang="en">
 <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Priyadarshi Raj</title>
+    <link rel="canonical" href="https://www.praj.in">
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-154882046-1"></script>
     <script>
@@ -9,180 +14,164 @@
         gtag('js', new Date());
         gtag('config', 'UA-154882046-1');
     </script>
-
-    <meta charset="utf-8"/>
-    <title>Raj&#39;s Blog</title>
     
-    <meta name="description" content="I&#39;m a computer science student and an open-source software developer enthusiastic about game development, linux and functional programming.">
-    <meta name="keywords" content="open-source, software, gamedev, linux, software, github, java, kotlin, clojure, functional, programming">
+    <meta name="description" content="I&#39;m a computer science undergrad and a passionate software craftsman">
+    <meta name="keywords" content="">
     
-    <link rel="canonical" href="https://praj.in">
-    <meta name="viewport" content="width=device-width, initial-scale=1">    
-
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Source+Sans+Pro&family=Source+Code+Pro&display=swap" rel="stylesheet"> 
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
-
-    <link href="/css/screen.css" rel="stylesheet" type="text/css" />
+    <script src="//cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="preconnect" href="//fonts.gstatic.com">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Raleway:wght@300;400;600&display=swap">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
     <link href="/css/prism.css" rel="stylesheet" type="text/css" />
+    <link href="/css/style.css" rel="stylesheet" type="text/css" />
+    <script src="/js/main.js"></script>
 </head>
 <body>
-
-
-<nav class="navbar navbar-default">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">Raj&#39;s Blog</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
+    <div id="sidebar">
+        <div class="intro">
+            <h5 class="brand"><a href="/" class="white-link">Priyadarshi Raj</a></h5>
+            <img id="avatar" src="/img/avatar.jpg" alt="avatar">
+            <p class="about">I&#39;m a computer science undergrad and a passionate software craftsman</p>
+            <nav>
+                <a href="/"  class="active" >Home</a>
                 
-                <li
-                >
-                <a href="/about/">About</a>
-                </li>
+                <a href="/about/" >About</a>
                 
-                <li
-                >
-                <a href="/projects/">Projects</a>
-                </li>
+                <a href="/projects/" >Projects</a>
                 
-                <li ><a href="/archives/">Archives</a></li>
-                <li><a href="/feed.xml"><i class="fa fa-rss" aria-hidden="true"></i></a></li>
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div><!--/.container-fluid -->
-</nav>
+                <a href="/archives/" >Archives</a>
+            </nav>
+        </div>
+        <div class="social">
+            <a href="https://github.com/praj-foss"><i data-feather="github"></i></a>
+            <a href="https://www.linkedin.com/in/priyadarshi-raj-740783197/"><i data-feather="linkedin"></i></a>
+            <a href="https://twitter.com/praj_foss"><i data-feather="twitter"></i></a>
+            <a href="/feed.xml"><i data-feather="rss"></i></a>
+        </div>
+    </div>
+    <script>checkSidebar();</script>
 
+    <main>
+        <header>
+            <h4 class="brand"><a href="/" class="white-link">Priyadarshi Raj</a></h4>
+        </header>
+        <div class="container"> 
+            
 
-<div id="holder" class="container">
-    <div class="row">
-        <div class="col-lg-12">
-            <div id="content">
-                
-<div id="post">
-    
+<div class="card">
     <div class="post-header">
-        <h2><a href="/posts/2020/graalvms-secret-llvm-backend/">GraalVM&#39;s secret LLVM backend</a></h2>
-        <div id="post-meta">
-            
-            <div class="date">20 September 2020</div>
-        </div>
+        <h2><a href="/posts/2020/graalvms-secret-llvm-backend/" class="white-link">GraalVM&#39;s secret LLVM backend</a></h2>
+        <p class="date">September 20, 2020</p>
     </div>
-    <p>You might have come across GraalVM's LLVM interpreter <code>lli</code> but did you know that it can also output LLVM bitcode too? Welp, maybe it isn't a secret anymore but GraalVM has an experimental backend that can build native images using LLVM instead of Graal. Let's have a quick demo.</p><!-- more -->
-    <a href="/posts/2020/graalvms-secret-llvm-backend/">Continue reading &rarr;</a>
-    <hr>
-    
-    <div class="post-header">
-        <h2><a href="/posts/2020/calling-uname-from-java-using-graalvm/">Calling uname from Java using GraalVM</a></h2>
-        <div id="post-meta">
-            
-            <div class="date">21 August 2020</div>
-        </div>
-    </div>
-    <p>For years I'd been searching how to build native Linux apps using Java and somehow <a href="https://www.graalvm.org/">GraalVM</a> has concluded it all. GraalVM's native-image tooling is arguably the most elegant way of connecting Java to the native world. We'll be exploring a clean way to interoperate with C libraries by writing a <a href="https://en.wikipedia.org/wiki/Uname">uname</a> alternative in pure Java. No JNI mess, no <code>sun.misc.Unsafe</code> imports, just GraalVM. 🛠️</p>
-    <a href="/posts/2020/calling-uname-from-java-using-graalvm/">Continue reading &rarr;</a>
-    <hr>
-    
-    <div class="post-header">
-        <h2><a href="/posts/2020/zimbra-mailbot-update-1/">Zimbra Mailbot: Update 1</a></h2>
-        <div id="post-meta">
-            
-            <div class="date">13 August 2020</div>
-        </div>
-    </div>
-    <p>My college exclusively uses Zimbra 8 as its mail server and the most annoying part is that there's no easy way to fetch new emails automatically (unlike Gmail app). The unavailability of any official Android app only makes it worse. So it's been a while since I started working on <a href="https://github.com/praj-foss/zimbramailbot">this chatbot</a> that can forward emails from any Zimbra account to Telegram. On a side note, it's also helping me sharpen my Clojure skills for web dev.</p>
-    <a href="/posts/2020/zimbra-mailbot-update-1/">Continue reading &rarr;</a>
-    <hr>
-    
-    <div class="post-header">
-        <h2><a href="/posts/2020/self-contained-native-looking-apps/">Self-contained, native-looking apps with SWT and ModiTect</a></h2>
-        <div id="post-meta">
-            
-            <div class="date">19 July 2020</div>
-        </div>
-    </div>
-    <p>The Standard Widget Toolkit, commonly known as <a href="https://www.eclipse.org/swt/">SWT</a>, is one of the few Java GUI libraries that are still actively maintained. Popularized by the use in Eclipse IDEs, it has a remarkable ability to present apps that look and feel <strong>native</strong> across all major desktops. Let me show you how to set up a Gradle project to build cross-platform, self-contained apps that mimic the native theme. 🤖</p>
-    <a href="/posts/2020/self-contained-native-looking-apps/">Continue reading &rarr;</a>
-    <hr>
-    
-    <div class="post-header">
-        <h2><a href="/posts/2020/making-standalone-java-apps/">Making Standalone Java apps</a></h2>
-        <div id="post-meta">
-            
-            <div class="date">28 June 2020</div>
-        </div>
-    </div>
-    <p>Back in high school days, I learned how Java programs could work flawlessly across different machines without the need for any additional compilation - <strong>Write once, run anywhere</strong>. One of our laptops had a 64-bit Ubuntu installed while the other one had a 32-bit Windows 7. I tested out on a few more platforms and realized one particular hurdle that constantly popped up: It was necessary to have Java installed beforehand, which most OSs didn't ship by default. So here's a post about how you could make your apps truly standalone.</p>
-    <a href="/posts/2020/making-standalone-java-apps/">Continue reading &rarr;</a>
-    <hr>
-    
-    <div class="post-header">
-        <h2><a href="/posts/2020/opengl-demo-using-graalvm/">OpenGL demo using GraalVM</a></h2>
-        <div id="post-meta">
-            
-            <div class="date">21 June 2020</div>
-        </div>
-    </div>
-    <p>Let me show how you can use <a href="https://www.graalvm.org/">GraalVM</a> to create an OpenGL app in Java. This is made possible by the <em>native-image</em> tool that helps GraalVM produce truly native binaries capable of interacting with native libraries directly, without any JNI overhead. ⚡️</p>
-    <a href="/posts/2020/opengl-demo-using-graalvm/">Continue reading &rarr;</a>
-    <hr>
-    
-    <div class="post-header">
-        <h2><a href="/posts/2020/the-season-of-lockdowns/">The Season of Lockdowns</a></h2>
-        <div id="post-meta">
-            
-            <div class="date">7 June 2020</div>
-        </div>
-    </div>
-    <p>We all expect a bunch of new stories, resolutions, and ideas popping up at the start of each year. But 2020 wasn't supposed to be just another year, it's a new decade. So it's natural to expect that the usual new year excitement would be amped up all round the world. Alas, things turned out in an exactly opposite way, isn't it?</p>
-    <a href="/posts/2020/the-season-of-lockdowns/">Continue reading &rarr;</a>
-    <hr>
-    
-    <div class="post-header">
-        <h2><a href="/posts/2019/gsoc-2019-week-12-updates/">GSoC 2019: Week 12 updates</a></h2>
-        <div id="post-meta">
-            
-            <div class="date">22 August 2019</div>
-        </div>
-    </div>
-    <p>Finally, we're at the end! This last week of GSoC includes implementation of parts of the revised Package Manager model, namely the <em>PackageDatabase</em> and some methods for interacting with <a href="http://jenkins.terasology.org">our Jenkins</a> repository.</p>
-    <a href="/posts/2019/gsoc-2019-week-12-updates/">Continue reading &rarr;</a>
-    <hr>
-    
-
-    <div id="prev-next">
-        
-        
-        <a id="next" href="/p/2/">Next &rarr;</a>
-        
-    </div>
+    <div class="post-content">
+        <p>You might have come across GraalVM's LLVM interpreter <code>lli</code> but did you know that it can also output LLVM bitcode too? Welp, maybe it isn't a secret anymore but GraalVM has an experimental backend that can build native images using LLVM instead of Graal. Let's have a quick demo. <!-- more --></p>
+    </div>    
+    <a href="/posts/2020/graalvms-secret-llvm-backend/" class="button">Continue reading</a>
 </div>
 
-            </div>
-        </div>
+<div class="card">
+    <div class="post-header">
+        <h2><a href="/posts/2020/calling-uname-from-java-using-graalvm/" class="white-link">Calling uname from Java using GraalVM</a></h2>
+        <p class="date">August 21, 2020</p>
     </div>
+    <div class="post-content">
+        <p>For years I'd been searching how to build native Linux apps using Java and somehow <a href="https://www.graalvm.org/">GraalVM</a> has concluded it all. GraalVM's native-image tooling is arguably the most elegant way of connecting Java to the native world. We'll be exploring a clean way to interoperate with C libraries by writing a <a href="https://en.wikipedia.org/wiki/Uname">uname</a> alternative in pure Java. No JNI mess, no <code>sun.misc.Unsafe</code> imports, just GraalVM. 🛠️ <!-- more --></p>
+    </div>    
+    <a href="/posts/2020/calling-uname-from-java-using-graalvm/" class="button">Continue reading</a>
 </div>
 
-<footer>Copyright <i class="fa fa-copyright" aria-hidden="true"></i> 2020 Priyadarshi Raj
-    <p style="text-align: center;">Powered by <a href="https://cryogenweb.org">Cryogen</a></p>
-</footer>
+<div class="card">
+    <div class="post-header">
+        <h2><a href="/posts/2020/zimbra-mailbot-update-1/" class="white-link">Zimbra Mailbot: Update 1</a></h2>
+        <p class="date">August 13, 2020</p>
+    </div>
+    <div class="post-content">
+        <p>My college exclusively uses Zimbra 8 as its mail server and the most annoying part is that there's no easy way to fetch new emails automatically (unlike Gmail app). The unavailability of any official Android app only makes it worse. So it's been a while since I started working on <a href="https://github.com/praj-foss/zimbramailbot">this chatbot</a> that can forward emails from any Zimbra account to Telegram. On a side note, it's also helping me sharpen my Clojure skills for web dev. <!-- more --></p>
+    </div>    
+    <a href="/posts/2020/zimbra-mailbot-update-1/" class="button">Continue reading</a>
+</div>
 
-<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script>twemoji.parse(document.getElementById("content"));</script>
+<div class="card">
+    <div class="post-header">
+        <h2><a href="/posts/2020/self-contained-native-looking-apps/" class="white-link">Self-contained, native-looking apps with SWT and ModiTect</a></h2>
+        <p class="date">July 19, 2020</p>
+    </div>
+    <div class="post-content">
+        <p>The Standard Widget Toolkit, commonly known as <a href="https://www.eclipse.org/swt/">SWT</a>, is one of the few Java GUI libraries that are still actively maintained. Popularized by the use in Eclipse IDEs, it has a remarkable ability to present apps that look and feel <strong>native</strong> across all major desktops. Let me show you how to set up a Gradle project to build cross-platform, self-contained apps that mimic the native theme. 🤖 <!-- more --></p>
+    </div>    
+    <a href="/posts/2020/self-contained-native-looking-apps/" class="button">Continue reading</a>
+</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/components/prism-core.min.js" integrity="sha256-9h14mWYYiQGkeAKg2JtijbqApb56kgw57WN6sI6dwH0=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha256-3S2PESHNt0YNL65z57WuHPHIv12fibpBDXepyCGHftw=" crossorigin="anonymous"></script>
+<div class="card">
+    <div class="post-header">
+        <h2><a href="/posts/2020/making-standalone-java-apps/" class="white-link">Making Standalone Java apps</a></h2>
+        <p class="date">June 28, 2020</p>
+    </div>
+    <div class="post-content">
+        <p>Back in high school days, I learned how Java programs could work flawlessly across different machines without the need for any additional compilation - <strong>Write once, run anywhere</strong>. One of our laptops had a 64-bit Ubuntu installed while the other one had a 32-bit Windows 7. I tested out on a few more platforms and realized one particular hurdle that constantly popped up: It was necessary to have Java installed beforehand, which most OSs didn't ship by default. So here's a post about how you could make your apps truly standalone. <!-- more --></p>
+    </div>    
+    <a href="/posts/2020/making-standalone-java-apps/" class="button">Continue reading</a>
+</div>
+
+<div class="card">
+    <div class="post-header">
+        <h2><a href="/posts/2020/opengl-demo-using-graalvm/" class="white-link">OpenGL demo using GraalVM</a></h2>
+        <p class="date">June 21, 2020</p>
+    </div>
+    <div class="post-content">
+        <p>Let me show how you can use <a href="https://www.graalvm.org/">GraalVM</a> to create an OpenGL app in Java. This is made possible by the <em>native-image</em> tool that helps GraalVM produce truly native binaries capable of interacting with native libraries directly, without any JNI overhead. ⚡️ <!-- more --></p>
+    </div>    
+    <a href="/posts/2020/opengl-demo-using-graalvm/" class="button">Continue reading</a>
+</div>
+
+<div class="card">
+    <div class="post-header">
+        <h2><a href="/posts/2020/the-season-of-lockdowns/" class="white-link">The Season of Lockdowns</a></h2>
+        <p class="date">June 7, 2020</p>
+    </div>
+    <div class="post-content">
+        <p>We all expect a bunch of new stories, resolutions, and ideas popping up at the start of each year. But 2020 wasn't supposed to be just another year, it's a new decade. So it's natural to expect that the usual new year excitement would be amped up all round the world. Alas, things turned out in an exactly opposite way, isn't it? <!-- more --></p>
+    </div>    
+    <a href="/posts/2020/the-season-of-lockdowns/" class="button">Continue reading</a>
+</div>
+
+<div class="card">
+    <div class="post-header">
+        <h2><a href="/posts/2019/gsoc-2019-week-12-updates/" class="white-link">GSoC 2019: Week 12 updates</a></h2>
+        <p class="date">August 22, 2019</p>
+    </div>
+    <div class="post-content">
+        <p>Finally, we're at the end! This last week of GSoC includes implementation of parts of the revised Package Manager model, namely the <em>PackageDatabase</em> and some methods for interacting with <a href="http://jenkins.terasology.org">our Jenkins</a> repository. <!-- more --></p>
+    </div>    
+    <a href="/posts/2019/gsoc-2019-week-12-updates/" class="button">Continue reading</a>
+</div>
 
 
+<div class="pagenav">
+    
+    <div class="expand"></div>
+    
+    <a href="/p/2/">Next &#9658;</a>
+    
+</div>
 
+
+        </div>
+        <footer>Copyright &copy; 2019 - 2021 Priyadarshi Raj</footer>
+    </main>
+
+    <div class="panel">
+        <button id="button-home" class="panel-button" onclick="gotoPage(this)" data-href="/"><i data-feather="home"></i></button>
+        <button id="button-share" class="panel-button" onclick="gotoPage(this)" data-href="/about"><i data-feather="user"></i></button>
+        <button id="button-top" class="panel-button" onclick="gotoTop()"><i data-feather="arrow-up-circle"></i></button>
+        <button id="button-menu" class="panel-button" onclick="toggleMenu()"><i id="icon-menu" data-feather="menu"></i><i id="icon-close" class="hidden" data-feather="x"></i></button>
+    </div>
+    <script>
+        feather.replace();
+        twemoji.parse(document.getElementsByClassName("container")[0]);
+    </script>
+    <script src="/js/prism.js"></script>
 </body>
 </html>

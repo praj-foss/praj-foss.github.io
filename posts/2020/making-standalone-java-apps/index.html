@@ -1,6 +1,11 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<html lang="en">
 <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Making Standalone Java apps - Priyadarshi Raj</title>
+    <link rel="canonical" href="https://www.praj.in/posts/2020/making-standalone-java-apps/">
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-154882046-1"></script>
     <script>
@@ -9,140 +14,120 @@
         gtag('js', new Date());
         gtag('config', 'UA-154882046-1');
     </script>
-
-    <meta charset="utf-8"/>
-    <title>Raj&#39;s Blog: Making Standalone Java apps</title>
     
-<meta name="keywords" content="Telegram,Non Tech,GraalVM,Web Dev,Packaging,LLVM,SWT,ModiTect,Zimbra Mailbot,Unix,Clojure,OpenGL,Native,GSoC,Java,Gradle,Terasology">
+<meta name="keywords" content="Telegram,Non Tech,GraalVM,Web Dev,Packaging,LLVM,SWT,ModiTect,Zimbra Mailbot,Linux,Clojure,OpenGL,Native,GSoC,Java,Gradle,Terasology">
 
-<meta name="description" content="Back in high school days, I learned how Java programs could work flawlessly across different machines without the need for any additional compilation - Write once, run anywhere. One of our laptops had a 64-bit Ubuntu installed while the other one had a 32-bit Windows 7. I tested out on a few more platforms and realized one particular hurdle that constantly popped up: It was necessary to have Java installed beforehand, which most OSs didn&#39;t ship by default. So here&#39;s a post about how you could make your apps truly standalone.">
+<meta name="description" content="Back in high school days, I learned how Java programs could work flawlessly across different machines without the need for any additional compilation - Write once, run anywhere. One of our laptops had a 64-bit Ubuntu installed while the other one had a 32-bit Windows 7. I tested out on a few more platforms and realized one particular hurdle that constantly popped up: It was necessary to have Java installed beforehand, which most OSs didn&#39;t ship by default. So here&#39;s a post about how you could make your apps truly standalone. ">
 
-<meta property="og:description" content="Back in high school days, I learned how Java programs could work flawlessly across different machines without the need for any additional compilation - Write once, run anywhere. One of our laptops had a 64-bit Ubuntu installed while the other one had a 32-bit Windows 7. I tested out on a few more platforms and realized one particular hurdle that constantly popped up: It was necessary to have Java installed beforehand, which most OSs didn&#39;t ship by default. So here&#39;s a post about how you could make your apps truly standalone.">
+<meta property="og:description" content="Back in high school days, I learned how Java programs could work flawlessly across different machines without the need for any additional compilation - Write once, run anywhere. One of our laptops had a 64-bit Ubuntu installed while the other one had a 32-bit Windows 7. I tested out on a few more platforms and realized one particular hurdle that constantly popped up: It was necessary to have Java installed beforehand, which most OSs didn&#39;t ship by default. So here&#39;s a post about how you could make your apps truly standalone. ">
 
-<meta property="og:url" content="https://praj.in/posts/2020/making-standalone-java-apps/" />
+<meta property="og:url" content="https://www.praj.in/posts/2020/making-standalone-java-apps/" />
 <meta property="og:title" content="Making Standalone Java apps" />
 <meta property="og:type" content="article" />
 
-    <link rel="canonical" href="https://praj.in/posts/2020/making-standalone-java-apps/">
-    <meta name="viewport" content="width=device-width, initial-scale=1">    
-
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Source+Sans+Pro&family=Source+Code+Pro&display=swap" rel="stylesheet"> 
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
-
-    <link href="/css/screen.css" rel="stylesheet" type="text/css" />
+    <script src="//cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="preconnect" href="//fonts.gstatic.com">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Raleway:wght@300;400;600&display=swap">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
     <link href="/css/prism.css" rel="stylesheet" type="text/css" />
+    <link href="/css/style.css" rel="stylesheet" type="text/css" />
+    <script src="/js/main.js"></script>
 </head>
 <body>
-
-
-<nav class="navbar navbar-default">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">Raj&#39;s Blog</a>
+    <div id="sidebar">
+        <div class="intro">
+            <h5 class="brand"><a href="/" class="white-link">Priyadarshi Raj</a></h5>
+            <img id="avatar" src="/img/avatar.jpg" alt="avatar">
+            <p class="about">I&#39;m a computer science undergrad and a passionate software craftsman</p>
+            <nav>
+                <a href="/" >Home</a>
+                
+                <a href="/about/" >About</a>
+                
+                <a href="/projects/" >Projects</a>
+                
+                <a href="/archives/" >Archives</a>
+            </nav>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                
-                <li
-                >
-                <a href="/about/">About</a>
-                </li>
-                
-                <li
-                >
-                <a href="/projects/">Projects</a>
-                </li>
-                
-                <li ><a href="/archives/">Archives</a></li>
-                <li><a href="/feed.xml"><i class="fa fa-rss" aria-hidden="true"></i></a></li>
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div><!--/.container-fluid -->
-</nav>
+        <div class="social">
+            <a href="https://github.com/praj-foss"><i data-feather="github"></i></a>
+            <a href="https://www.linkedin.com/in/priyadarshi-raj-740783197/"><i data-feather="linkedin"></i></a>
+            <a href="https://twitter.com/praj_foss"><i data-feather="twitter"></i></a>
+            <a href="/feed.xml"><i data-feather="rss"></i></a>
+        </div>
+    </div>
+    <script>checkSidebar();</script>
 
-
-<div id="holder" class="container">
-    <div class="row">
-        <div class="col-lg-12">
-            <div id="content">
-                
-<div id="post">
+    <main>
+        <header>
+            <h4 class="brand"><a href="/" class="white-link">Priyadarshi Raj</a></h4>
+        </header>
+        <div class="container"> 
+            
+<div class="card">
     <div class="post-header">
-    <div id="post-meta" class="row">
-        <div class="col-lg-6">28 June 2020</div>
-        
+        <h2>Making Standalone Java apps</h2>
+        <p class="date">June 28, 2020</p>
     </div>
-    <h2>Making Standalone Java apps</h2>
-</div>
-<div>
-    
-    <p>Back in high school days, I learned how Java programs could work flawlessly across different machines without the need for any additional compilation - <strong>Write once, run anywhere</strong>. One of our laptops had a 64-bit Ubuntu installed while the other one had a 32-bit Windows 7. I tested out on a few more platforms and realized one particular hurdle that constantly popped up: It was necessary to have Java installed beforehand, which most OSs didn't ship by default. So here's a post about how you could make your apps truly standalone.</p><!--more--><h2 id="bundling-a-jre">Bundling a JRE</h2><p>A bundled JRE would allow your app to run just as it would with a user-side runtime. Because of the flawless compatibility, this method is preferred by many popular desktop apps including JetBrains IDEs and Minecraft. Bundling a complete JRE has been the traditional solution for making standalone apps. There's also a variety of tools that will help you create a proper package using this method. However, it also produces the most bloated distributable, as you're bundling the entire runtime even if you use only a few parts of the standard library. Here are some of the free OpenJDK builds you can use for bundling:</p><ul><li><a href="https://adoptopenjdk.net/">AdoptOpenJDK</a></li><li><a href="https://bell-sw.com/pages/downloads/">BellSoft Liberica</a></li><li><a href="https://aws.amazon.com/corretto/">Amazon Coretto</a></li><li><a href="https://www.azul.com/downloads/zulu-community/">Azul Zulu</a></li></ul><p>There aren't many significant downsides to this, other than bloating your package size. Gradle or Maven could also be easily configured to bundle a JRE along with your distributable ZIP. One of the goals of <a href="/posts/2019/introduction-to-terasology-launcher/">my GSoC project</a> was to bundle a JRE with the <em>Terasology Launcher</em>, so that it runs without hassle.</p><h3 id="customized-jre">Customized JRE</h3><p>Since Java 9, the <a href="https://docs.oracle.com/javase/9/tools/jlink.htm">jlink</a> tool can be used to assemble a custom Java runtime based on your module dependencies. This would result in a minimized JRE with just enough modules to run your app perfectly. However, it's not available in JDK 8 or older, which still has a significant developer population. Nevertheless, jlink is your best bet for <strong>modern</strong> standalone Java apps that don't want any compromise with its massive ecosystem.</p><h2 id="helpful-tools">Helpful tools</h2><p>Manual JRE bundling is a tedious job, so here are some common tools that can help you create a standalone package for your apps. These differ by the supported package formats and platforms:</p><ul><li><a href="https://github.com/libgdx/packr">libGDX packr</a>: CLI tool supporting Windows, OS X and Linux. Can minimize JRE 8 and older too.</li><li><a href="https://www.ej-technologies.com/products/install4j/overview.html">install4j</a>: GUI tool supporting Windows, OS X and Linux.</li><li><a href="http://launch4j.sourceforge.net/">launch4j</a>: GUI tool for creating Windows installer.</li><li><a href="https://github.com/mini2Dx/parcl">parcl</a>: Gradle plugin similar to <em>packr</em>.</li><li><a href="https://github.com/fvarrui/JavaPackager">javapackager</a>: Maven plugin supporting multiple package formats like <em>deb</em>, <em>rpm</em>, <em>msi</em>, <em>dmg</em>, and <em>zip</em>.</li><li><a href="https://snapcraft.io/docs/java-applications">snapcraft</a>: Creates snap packages that can run across major Linux distros.</li></ul><h2 id="other-solutions">Other solutions</h2><p>You could use a different runtime than the usual OpenJDK-based JREs. The closest one is provided by <a href="https://www.graalvm.org/">GraalVM</a> for compiling Java bytecode directly to native binaries, although it has certain <a href="https://github.com/oracle/graal/blob/master/substratevm/LIMITATIONS.md">limitations</a>. Another option might be to use <a href="https://www.ikvm.net/">IKVM.NET</a> for running on top of CLR. If you're targetting just Android or iOS, have a look at Intel's <a href="https://multi-os-engine.org/">MultiOS engine</a>. But you can rest assured that bundling a proper JRE will have no compatibility issues on desktops. 👍️</p>
-</div>
+    <div class="post-content">
+        <p>Back in high school days, I learned how Java programs could work flawlessly across different machines without the need for any additional compilation - <strong>Write once, run anywhere</strong>. One of our laptops had a 64-bit Ubuntu installed while the other one had a 32-bit Windows 7. I tested out on a few more platforms and realized one particular hurdle that constantly popped up: It was necessary to have Java installed beforehand, which most OSs didn't ship by default. So here's a post about how you could make your apps truly standalone. <!-- more --></p><h3 id="bundling-a-jre">Bundling a JRE</h3><p>A bundled JRE would allow your app to run just as it would with a user-side runtime. Because of the flawless compatibility, this method is preferred by many popular desktop apps including JetBrains IDEs and Minecraft. Bundling a complete JRE has been the traditional solution for making standalone apps. There's also a variety of tools that will help you create a proper package using this method. However, it also produces the most bloated distributable, as you're bundling the entire runtime even if you use only a few parts of the standard library. Here are some of the free OpenJDK builds you can use for bundling:</p><ul><li><a href="https://adoptopenjdk.net/">AdoptOpenJDK</a></li><li><a href="https://bell-sw.com/pages/downloads/">BellSoft Liberica</a></li><li><a href="https://aws.amazon.com/corretto/">Amazon Coretto</a></li><li><a href="https://www.azul.com/downloads/zulu-community/">Azul Zulu</a></li></ul><p>There aren't many significant downsides to this, other than bloating your package size. Gradle or Maven could also be easily configured to bundle a JRE along with your distributable ZIP. One of the goals of <a href="/posts/2019/introduction-to-terasology-launcher/">my GSoC project</a> was to bundle a JRE with the <em>Terasology Launcher</em>, so that it runs without hassle.</p><h4 id="customized-jre">Customized JRE</h4><p>Since Java 9, the <a href="https://docs.oracle.com/javase/9/tools/jlink.htm">jlink</a> tool can be used to assemble a custom Java runtime based on your module dependencies. This would result in a minimized JRE with just enough modules to run your app perfectly. However, it's not available in JDK 8 or older, which still has a significant developer population. Nevertheless, jlink is your best bet for <strong>modern</strong> standalone Java apps that don't want any compromise with its massive ecosystem.</p><h3 id="helpful-tools">Helpful tools</h3><p>Manual JRE bundling is a tedious job, so here are some common tools that can help you create a standalone package for your apps. These differ by the supported package formats and platforms:</p><ul><li><a href="https://github.com/libgdx/packr">libGDX packr</a>: CLI tool supporting Windows, OS X and Linux. Can minimize JRE 8 and older too.</li><li><a href="https://www.ej-technologies.com/products/install4j/overview.html">install4j</a>: GUI tool supporting Windows, OS X and Linux.</li><li><a href="http://launch4j.sourceforge.net/">launch4j</a>: GUI tool for creating Windows installer.</li><li><a href="https://github.com/mini2Dx/parcl">parcl</a>: Gradle plugin similar to <em>packr</em>.</li><li><a href="https://github.com/fvarrui/JavaPackager">javapackager</a>: Maven plugin supporting multiple package formats like <em>deb</em>, <em>rpm</em>, <em>msi</em>, <em>dmg</em>, and <em>zip</em>.</li><li><a href="https://snapcraft.io/docs/java-applications">snapcraft</a>: Creates snap packages that can run across major Linux distros.</li></ul><h3 id="other-solutions">Other solutions</h3><p>You could use a different runtime than the usual OpenJDK-based JREs. The closest one is provided by <a href="https://www.graalvm.org/">GraalVM</a> for compiling Java bytecode directly to native binaries, although it has certain <a href="https://github.com/oracle/graal/blob/master/substratevm/LIMITATIONS.md">limitations</a>. Another option might be to use <a href="https://www.ikvm.net/">IKVM.NET</a> for running on top of CLR. If you're targetting just Android or iOS, have a look at Intel's <a href="https://multi-os-engine.org/">MultiOS engine</a>. But you can rest assured that bundling a proper JRE will have no compatibility issues on desktops. 👍️</p>
+    </div>
 
-<div id="post-tags">
-    <b>Tags: </b>
     
-    <a href="/tags/Packaging/">Packaging</a>
-    
-    <a href="/tags/Java/">Java</a>
-    
-    <a href="/tags/Gradle/">Gradle</a>
-    
-</div>
-
-
-    <div id="prev-next">
+    <div class="post-tags">
         
-        <a id="prev" href="/posts/2020/self-contained-native-looking-apps/">&larr; Self-contained, native-looking apps with SWT and ModiTect</a>
+        <a href="/tags/Packaging/" class="button"># Packaging</a>
         
+        <a href="/tags/Java/" class="button"># Java</a>
         
-        <a id="next" href="/posts/2020/opengl-demo-using-graalvm/">OpenGL demo using GraalVM &rarr;</a>
+        <a href="/tags/Gradle/" class="button"># Gradle</a>
         
     </div>
     
-    
-    <div id="comments">
-        <div id="disqus_thread"></div>
-        <script type="text/javascript">
-            var disqus_config = function () {
-                this.page.url = "https://praj.in/posts/2020/making-standalone-java-apps/";
-                this.page.identifier = "Making Standalone Java apps";
-            };
-            (function() {
-                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = '//praj-in.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-        </script>
+
+    <div class="pagenav pagenav-center">
+        
+        <a href="/posts/2020/self-contained-native-looking-apps/">&#9668; Self-contained, native-looking apps with SWT and ModiTect</a>
+        
+        
+        <a href="/posts/2020/opengl-demo-using-graalvm/">OpenGL demo using GraalVM &#9658;</a>
+        
     </div>
+
+    
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+            this.page.url = "https://www.praj.in/posts/2020/making-standalone-java-apps/";
+            this.page.identifier = "Making Standalone Java apps";
+        };
+        (function() { 
+            var d = document, s = d.createElement('script');
+            s.src = 'https://praj-in.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', + new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     
 </div>
 
-            </div>
         </div>
+        <footer>Copyright &copy; 2019 - 2021 Priyadarshi Raj</footer>
+    </main>
+
+    <div class="panel">
+        <button id="button-home" class="panel-button" onclick="gotoPage(this)" data-href="/"><i data-feather="home"></i></button>
+        <button id="button-share" class="panel-button" onclick="gotoPage(this)" data-href="/about"><i data-feather="user"></i></button>
+        <button id="button-top" class="panel-button" onclick="gotoTop()"><i data-feather="arrow-up-circle"></i></button>
+        <button id="button-menu" class="panel-button" onclick="toggleMenu()"><i id="icon-menu" data-feather="menu"></i><i id="icon-close" class="hidden" data-feather="x"></i></button>
     </div>
-</div>
-
-<footer>Copyright <i class="fa fa-copyright" aria-hidden="true"></i> 2020 Priyadarshi Raj
-    <p style="text-align: center;">Powered by <a href="https://cryogenweb.org">Cryogen</a></p>
-</footer>
-
-<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script>twemoji.parse(document.getElementById("content"));</script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/components/prism-core.min.js" integrity="sha256-9h14mWYYiQGkeAKg2JtijbqApb56kgw57WN6sI6dwH0=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha256-3S2PESHNt0YNL65z57WuHPHIv12fibpBDXepyCGHftw=" crossorigin="anonymous"></script>
-
-
-
+    <script>
+        feather.replace();
+        twemoji.parse(document.getElementsByClassName("container")[0]);
+    </script>
+    <script src="/js/prism.js"></script>
 </body>
 </html>

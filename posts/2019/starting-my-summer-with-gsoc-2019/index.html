@@ -1,6 +1,11 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<html lang="en">
 <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Starting my summer with GSoC 2019 - Priyadarshi Raj</title>
+    <link rel="canonical" href="https://www.praj.in/posts/2019/starting-my-summer-with-gsoc-2019/">
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-154882046-1"></script>
     <script>
@@ -9,136 +14,116 @@
         gtag('js', new Date());
         gtag('config', 'UA-154882046-1');
     </script>
-
-    <meta charset="utf-8"/>
-    <title>Raj&#39;s Blog: Starting my summer with GSoC 2019</title>
     
-<meta name="keywords" content="Telegram,Non Tech,GraalVM,Web Dev,Packaging,LLVM,SWT,ModiTect,Zimbra Mailbot,Unix,Clojure,OpenGL,Native,GSoC,Java,Gradle,Terasology">
+<meta name="keywords" content="Telegram,Non Tech,GraalVM,Web Dev,Packaging,LLVM,SWT,ModiTect,Zimbra Mailbot,Linux,Clojure,OpenGL,Native,GSoC,Java,Gradle,Terasology">
 
-<meta name="description" content="It was probably the first time I received some Google-branded emails other than Google Forms stuff. May 7 was a day of celebration, kickstarting my journey into the open source world. Special thanks to Terasology and all my mentors.">
+<meta name="description" content="It was probably the first time I received some Google-branded emails other than Google Forms stuff. May 7 was a day of celebration, kickstarting my journey into the open source world. Special thanks to Terasology and all my mentors. ">
 
-<meta property="og:description" content="It was probably the first time I received some Google-branded emails other than Google Forms stuff. May 7 was a day of celebration, kickstarting my journey into the open source world. Special thanks to Terasology and all my mentors.">
+<meta property="og:description" content="It was probably the first time I received some Google-branded emails other than Google Forms stuff. May 7 was a day of celebration, kickstarting my journey into the open source world. Special thanks to Terasology and all my mentors. ">
 
-<meta property="og:url" content="https://praj.in/posts/2019/starting-my-summer-with-gsoc-2019/" />
+<meta property="og:url" content="https://www.praj.in/posts/2019/starting-my-summer-with-gsoc-2019/" />
 <meta property="og:title" content="Starting my summer with GSoC 2019" />
 <meta property="og:type" content="article" />
 
-    <link rel="canonical" href="https://praj.in/posts/2019/starting-my-summer-with-gsoc-2019/">
-    <meta name="viewport" content="width=device-width, initial-scale=1">    
-
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Source+Sans+Pro&family=Source+Code+Pro&display=swap" rel="stylesheet"> 
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
-
-    <link href="/css/screen.css" rel="stylesheet" type="text/css" />
+    <script src="//cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="preconnect" href="//fonts.gstatic.com">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Raleway:wght@300;400;600&display=swap">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
     <link href="/css/prism.css" rel="stylesheet" type="text/css" />
+    <link href="/css/style.css" rel="stylesheet" type="text/css" />
+    <script src="/js/main.js"></script>
 </head>
 <body>
-
-
-<nav class="navbar navbar-default">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">Raj&#39;s Blog</a>
+    <div id="sidebar">
+        <div class="intro">
+            <h5 class="brand"><a href="/" class="white-link">Priyadarshi Raj</a></h5>
+            <img id="avatar" src="/img/avatar.jpg" alt="avatar">
+            <p class="about">I&#39;m a computer science undergrad and a passionate software craftsman</p>
+            <nav>
+                <a href="/" >Home</a>
+                
+                <a href="/about/" >About</a>
+                
+                <a href="/projects/" >Projects</a>
+                
+                <a href="/archives/" >Archives</a>
+            </nav>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                
-                <li
-                >
-                <a href="/about/">About</a>
-                </li>
-                
-                <li
-                >
-                <a href="/projects/">Projects</a>
-                </li>
-                
-                <li ><a href="/archives/">Archives</a></li>
-                <li><a href="/feed.xml"><i class="fa fa-rss" aria-hidden="true"></i></a></li>
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div><!--/.container-fluid -->
-</nav>
+        <div class="social">
+            <a href="https://github.com/praj-foss"><i data-feather="github"></i></a>
+            <a href="https://www.linkedin.com/in/priyadarshi-raj-740783197/"><i data-feather="linkedin"></i></a>
+            <a href="https://twitter.com/praj_foss"><i data-feather="twitter"></i></a>
+            <a href="/feed.xml"><i data-feather="rss"></i></a>
+        </div>
+    </div>
+    <script>checkSidebar();</script>
 
-
-<div id="holder" class="container">
-    <div class="row">
-        <div class="col-lg-12">
-            <div id="content">
-                
-<div id="post">
+    <main>
+        <header>
+            <h4 class="brand"><a href="/" class="white-link">Priyadarshi Raj</a></h4>
+        </header>
+        <div class="container"> 
+            
+<div class="card">
     <div class="post-header">
-    <div id="post-meta" class="row">
-        <div class="col-lg-6">14 May 2019</div>
-        
+        <h2>Starting my summer with GSoC 2019</h2>
+        <p class="date">May 14, 2019</p>
     </div>
-    <h2>Starting my summer with GSoC 2019</h2>
-</div>
-<div>
-    
-    <p>It was probably the first time I received some Google-branded emails other than Google Forms stuff. May 7 was a day of celebration, kickstarting my journey into the open source world. Special thanks to <a href="https://terasology.org/">Terasology</a> and all my mentors.</p><p><img src="/img/2019/ter-logo-1.png" alt="Terasology" /></p><!--more--><p>My project aims to enhance <a href="https://github.com/MovingBlocks/TerasologyLauncher">Terasology's launcher</a> and its upcoming release will showcase my entire summer's efforts. You can have a look at my complete proposal <a href="https://docs.google.com/document/d/1jrYIAPLGH1j2MyP5paTl_LtYkXXV63ku6cndgbDXD6g/edit?usp=sharing">here</a>. By the way, it was my first creation using Google Docs and it turned out to be pretty neat. 😉</p><p><img src="/img/2019/gsoc-2.png" alt="Proposal" /></p><p>It's always recommended to start GSoC preparations early, but my case was otherwise. I started around half a month away from the registration deadline. Luckily, I had some previous experience in <strong>JavaFX</strong> that helped me understand the launcher well and improve my proposal accordingly.</p><p><img src="/img/2019/menubackground.jpg" alt="Menu" /></p><p>Please do check out the <a href="https://terasology.org/">Terasology project</a>. It's an awesome game engine having a Minecraft-inspired voxel-based design, with great modularity and customizability.</p>
-</div>
+    <div class="post-content">
+        <p>It was probably the first time I received some Google-branded emails other than Google Forms stuff. May 7 was a day of celebration, kickstarting my journey into the open source world. Special thanks to <a href="https://terasology.org/">Terasology</a> and all my mentors. <!-- more --></p><p><img src="/img/2019/ter-logo-1.png" alt="Terasology" /></p><p>My project aims to enhance <a href="https://github.com/MovingBlocks/TerasologyLauncher">Terasology's launcher</a> and its upcoming release will showcase my entire summer's efforts. You can have a look at my complete proposal <a href="https://docs.google.com/document/d/1jrYIAPLGH1j2MyP5paTl_LtYkXXV63ku6cndgbDXD6g/edit?usp=sharing">here</a>. By the way, it was my first creation using Google Docs and it turned out to be pretty neat. 😉</p><p><img src="/img/2019/gsoc-2.png" alt="Proposal" /></p><p>It's always recommended to start GSoC preparations early, but my case was otherwise. I started around half a month away from the registration deadline. Luckily, I had some previous experience in <strong>JavaFX</strong> that helped me understand the launcher well and improve my proposal accordingly.</p><p><img src="/img/2019/menubackground.jpg" alt="Menu" /></p><p>Please do check out the <a href="https://terasology.org/">Terasology project</a>. It's an awesome game engine having a Minecraft-inspired voxel-based design, with great modularity and customizability.</p>
+    </div>
 
-<div id="post-tags">
-    <b>Tags: </b>
     
-    <a href="/tags/GSoC/">GSoC</a>
-    
-    <a href="/tags/Terasology/">Terasology</a>
-    
-</div>
-
-
-    <div id="prev-next">
+    <div class="post-tags">
         
-        <a id="prev" href="/posts/2019/introduction-to-terasology-launcher/">&larr; Introduction to Terasology Launcher</a>
+        <a href="/tags/GSoC/" class="button"># GSoC</a>
         
+        <a href="/tags/Terasology/" class="button"># Terasology</a>
         
     </div>
     
-    
-    <div id="comments">
-        <div id="disqus_thread"></div>
-        <script type="text/javascript">
-            var disqus_config = function () {
-                this.page.url = "https://praj.in/posts/2019/starting-my-summer-with-gsoc-2019/";
-                this.page.identifier = "Starting my summer with GSoC 2019";
-            };
-            (function() {
-                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = '//praj-in.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-        </script>
+
+    <div class="pagenav pagenav-center">
+        
+        <a href="/posts/2019/introduction-to-terasology-launcher/">&#9668; Introduction to Terasology Launcher</a>
+        
+        
     </div>
+
+    
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+            this.page.url = "https://www.praj.in/posts/2019/starting-my-summer-with-gsoc-2019/";
+            this.page.identifier = "Starting my summer with GSoC 2019";
+        };
+        (function() { 
+            var d = document, s = d.createElement('script');
+            s.src = 'https://praj-in.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', + new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     
 </div>
 
-            </div>
         </div>
+        <footer>Copyright &copy; 2019 - 2021 Priyadarshi Raj</footer>
+    </main>
+
+    <div class="panel">
+        <button id="button-home" class="panel-button" onclick="gotoPage(this)" data-href="/"><i data-feather="home"></i></button>
+        <button id="button-share" class="panel-button" onclick="gotoPage(this)" data-href="/about"><i data-feather="user"></i></button>
+        <button id="button-top" class="panel-button" onclick="gotoTop()"><i data-feather="arrow-up-circle"></i></button>
+        <button id="button-menu" class="panel-button" onclick="toggleMenu()"><i id="icon-menu" data-feather="menu"></i><i id="icon-close" class="hidden" data-feather="x"></i></button>
     </div>
-</div>
-
-<footer>Copyright <i class="fa fa-copyright" aria-hidden="true"></i> 2020 Priyadarshi Raj
-    <p style="text-align: center;">Powered by <a href="https://cryogenweb.org">Cryogen</a></p>
-</footer>
-
-<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script>twemoji.parse(document.getElementById("content"));</script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/components/prism-core.min.js" integrity="sha256-9h14mWYYiQGkeAKg2JtijbqApb56kgw57WN6sI6dwH0=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha256-3S2PESHNt0YNL65z57WuHPHIv12fibpBDXepyCGHftw=" crossorigin="anonymous"></script>
-
-
-
+    <script>
+        feather.replace();
+        twemoji.parse(document.getElementsByClassName("container")[0]);
+    </script>
+    <script src="/js/prism.js"></script>
 </body>
 </html>
