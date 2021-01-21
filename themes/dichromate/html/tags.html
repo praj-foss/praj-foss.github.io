@@ -1,0 +1,16 @@
+{% extends "/html/base.html" %}
+{%block subtitle %}Tags - {% endblock %}
+{% block content %}
+<div class="card">
+    <div class="page-header">
+        <h2>Tags</h2>
+    </div>
+    <div class="page-content">
+        <div class="post-tags">
+            {% for tag in tags %}
+            <a href="{{tag.uri}}" class="button"># {{tag.name}}</a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

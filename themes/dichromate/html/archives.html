@@ -1,0 +1,26 @@
+{% extends "/html/base.html" %}
+{%block subtitle %}Archives - {% endblock %}
+{% block content %}
+<div class="card">
+    <div class="page-header">
+        <h2>Archives</h2>
+    </div>
+    <div class="page-content">
+        <h4>Tags</h4>
+        <div class="post-tags">
+            {% for tag in tags %}
+            <a href="{{tag.uri}}" class="button"># {{tag.name}}</a>
+            {% endfor %}
+        </div>
+        <br>
+        {% for group in groups %}
+        <h4>{{group.group}}</h4>
+        <ul>
+        {% for post in group.posts %}
+        <li>{{post.date|date:"MMM dd"}} - <a href="{{post.uri}}">{{post.title}}</a></li>
+        {% endfor %}
+        </ul>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

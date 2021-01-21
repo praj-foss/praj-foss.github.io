@@ -1,0 +1,26 @@
+{% extends "/html/base.html" %}
+{% block content %}
+{% for post in posts %}
+<div class="card">
+    <div class="post-header">
+        <h2><a href="{{post.uri}}" class="white-link">{{post.title}}</a></h2>
+        <p class="date">{{post.date|date:longDate}}</p>
+    </div>
+    <div class="post-content">
+        {{post.content|safe}}
+    </div>    
+    <a href="{{post.uri}}" class="button">Continue reading</a>
+</div>
+{% endfor %}
+{% if any prev-uri next-uri %}
+<div class="pagenav">
+    {% if prev-uri %}
+    <a href="{{prev-uri}}">&#9668; Previous</a>
+    {% endif %}
+    <div class="expand"></div>
+    {% if next-uri %}
+    <a href="{{next-uri}}">Next &#9658;</a>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

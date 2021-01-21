@@ -1,0 +1,38 @@
+{:site-title                   "Priyadarshi Raj"
+ :author                       "Priyadarshi Raj"
+ :description                  "I'm a computer science undergrad and a passionate software craftsman"
+ :site-url                     "https://www.praj.in"
+ :post-root                    "posts"
+ :page-root                    "pages"
+ :post-root-uri                "posts"
+ :page-root-uri                ""
+ :tag-root-uri                 "tags"
+ :author-root-uri              "authors"
+ :public-dest                  "docs"
+ :blog-prefix                  ""
+ :rss-name                     "feed.xml"
+ :rss-filters                  ["cryogen"]
+ :recent-posts                 3
+ :post-date-format             "dd-MM-yyyy"
+ :archive-group-format         "yyyy"
+ :sass-src                     []
+ :sass-path                    "sass"
+ :theme                        "dichromate"
+ :resources                    ["img"]
+ :keep-files                   ["CNAME"]
+ :disqus?                      true
+ :disqus-shortname             "praj-in"
+ :ignored-files                [#"\.#.*" #".*\.swp$"]
+ :previews?                    true
+ :posts-per-page               8
+ :blocks-per-preview           1
+ :clean-urls                   :trailing-slash
+ :collapse-subdirs?            false
+ :hide-future-posts?           true
+ :klipse                       {}
+ :description-include-elements #{:p :h1 :h2 :h3 :h4 :h5 :h6}
+ :debug?                       false
+
+ :social                       {:github   "https://github.com/praj-foss"
+                                :twitter  "https://twitter.com/praj_foss"
+                                :linkedin "https://www.linkedin.com/in/priyadarshi-raj-740783197/"}}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block subtitle %}{% endblock %}{{title}}</title>
+    <link rel="canonical" href="{{site-url}}{{uri}}">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-154882046-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-154882046-1');
+    </script>
+    {% block meta %}
+    <meta name="description" content="{{description}}">
+    <meta name="keywords" content="">
+    {% endblock %}
+    <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="preconnect" href="//fonts.gstatic.com">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Raleway:wght@300;400;600&display=swap">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    {% style "/css/prism.css" %}
+    {% style "/css/style.css" %}
+    <script src="/js/main.js"></script>
+</head>
+<body>
+    <div id="sidebar">
+        <div class="intro">
+            <h5 class="brand"><a href="{{index-uri}}" class="white-link">{{author}}</a></h5>
+            <img id="avatar" src="/img/avatar.jpg" alt="avatar">
+            <p class="about">{{description}}</p>
+            <nav>
+                <a href="{{index-uri}}" {% if home %} class="active" {% endif %}>Home</a>
+                {% for nav-page in navbar-pages %}
+                <a href="{{nav-page.uri}}" {% ifequal page.uri nav-page.uri %} class="active" {% endifequal %}>{{nav-page.title}}</a>
+                {% endfor %}
+                <a href="{{archives-uri}}" {% if archives %} class="active" {% endif %}>Archives</a>
+            </nav>
+        </div>
+        <div class="social">
+            <a href="{{social.github}}"><i data-feather="github"></i></a>
+            <a href="{{social.linkedin}}"><i data-feather="linkedin"></i></a>
+            <a href="{{social.twitter}}"><i data-feather="twitter"></i></a>
+            <a href="{{rss-uri}}"><i data-feather="rss"></i></a>
+        </div>
+    </div>
+    <script>checkSidebar();</script>
+
+    <main>
+        <header>
+            <h4 class="brand"><a href="{{index-uri}}" class="white-link">{{author}}</a></h4>
+        </header>
+        <div class="container"> 
+            {% block content %}
+            {% endblock %}
+        </div>
+        <footer>Copyright &copy; 2019 - 2021 {{author}}</footer>
+    </main>
+
+    <div class="panel">
+        <button id="button-home" class="panel-button" onclick="gotoPage(this)" data-href="{{index-uri}}"><i data-feather="home"></i></button>
+        <button id="button-share" class="panel-button" onclick="gotoPage(this)" data-href="/about"><i data-feather="user"></i></button>
+        <button id="button-top" class="panel-button" onclick="gotoTop()"><i data-feather="arrow-up-circle"></i></button>
+        <button id="button-menu" class="panel-button" onclick="toggleMenu()"><i id="icon-menu" data-feather="menu"></i><i id="icon-close" class="hidden" data-feather="x"></i></button>
+    </div>
+    <script>
+        feather.replace();
+        twemoji.parse(document.getElementsByClassName("container")[0]);
+    </script>
+    <script src="/js/prism.js"></script>
+</body>
+</html>
