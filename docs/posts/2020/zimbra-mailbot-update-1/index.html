@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zimbra Mailbot: Update 1 - Priyadarshi Raj</title>
+    <title>Zimbra Mailbot: Update 1 · Priyadarshi Raj</title>
     <link rel="canonical" href="https://www.praj.in/posts/2020/zimbra-mailbot-update-1/">
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -15,7 +15,7 @@
         gtag('config', 'UA-154882046-1');
     </script>
     
-<meta name="keywords" content="Telegram,Non Tech,GraalVM,Web Dev,Packaging,LLVM,SWT,ModiTect,Zimbra Mailbot,Linux,Clojure,OpenGL,Native,GSoC,Java,Gradle,Terasology">
+<meta name="keywords" content="clojure,webdev,native,opengl,linux,java,packaging,terasology,status,swt,gradle,zimbra,telegram,llvm,graalvm,gsoc">
 
 <meta name="description" content="My college exclusively uses Zimbra 8 as its mail server and the most annoying part is that there&#39;s no easy way to fetch new emails automatically (unlike Gmail app). The unavailability of any official Android app only makes it worse. So it&#39;s been a while since I started working on this chatbot that can forward emails from any Zimbra account to Telegram. On a side note, it&#39;s also helping me sharpen my Clojure skills for web dev. ">
 
@@ -25,7 +25,7 @@
 <meta property="og:title" content="Zimbra Mailbot: Update 1" />
 <meta property="og:type" content="article" />
 
-    <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+    <script src="//twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
     <script src="//cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <link rel="preconnect" href="//fonts.gstatic.com">
     <link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Raleway:wght@300;400;600&display=swap">
@@ -72,19 +72,19 @@
         <p class="date">August 13, 2020</p>
     </div>
     <div class="post-content">
-        <p>My college exclusively uses Zimbra 8 as its mail server and the most annoying part is that there's no easy way to fetch new emails automatically (unlike Gmail app). The unavailability of any official Android app only makes it worse. So it's been a while since I started working on <a href="https://github.com/praj-foss/zimbramailbot">this chatbot</a> that can forward emails from any Zimbra account to Telegram. On a side note, it's also helping me sharpen my Clojure skills for web dev. <!-- more --></p><h3 id="the-plan">The Plan</h3><p>The primary mode of accessing Zimbra is via an old-fashioned web app. While it's good enough for casual email management, I find the lack of an auto-updating inbox really annoying, i.e., you need to open the web app and check for new emails every time. Luckily they also have REST, GraphQL, and SOAP APIs to use their web service and I figured out how I could make a Telegram chatbot that could fetch emails from my Zimbra regularly. One more important feature is how Zimbra's own bot account (a.k.a <em>The Postmaster</em>) can send notification emails to a secondary email id. You can set it up to receive a notification mail ("New message received at ... ") on your Gmail each time your Zimbra receives something. Although it doesn't forward the actual content of the mail, it's the closest feature you can get to an auto-syncing inbox.</p><p><img src="/img/2020/zmb-1.png" alt="diagram" /></p><p>Making use of these notifications, the bot could reactively fetch new mails from Zimbra, making things more efficient than a usual polling strategy. I'll be continuing with their SOAP API since it's more mature and well documented. Under the hood, the bot is a usual web application that keeps responding to messages sent by the user. The bot should do the following:</p><ol><li>Fetch the Zimbra auth token from the user</li><li>Configure Zimbra to notify bot's custom mail server</li><li>On receiving a notification, fetch new mail from Zimbra</li><li>Format and forward the mail to user's Telegram</li></ol><p>Telegram's <a href="https://core.telegram.org/bots/api">Bot API</a> is heavily documented as well, making it fun to build great bots from scratch. One Google search can find a ton of articles on how to get started.</p><h3 id="current-status">Current status</h3><p>It just reached <em>0.0.5</em> and this pre-alpha bot is already online replying to basic commands, although it's not connectable to Zimbra yet. It's also the first project where I'm seriously moving with <em>Test Driven Developement</em>, and it's been awesome so far. It should be noted that I've planned it to be compatible with any Zimbra 8 server, not just the one from my college. The roadmap is split something like this:</p><ul><li><em>0.1.0</em> : A dummy chatbot running online, CI/CD and a better domain</li><li><em>0.2.0</em> : Full compatibility with Zimbra 8, own mail server</li><li><em>0.3.0</em> : Postgres setup, fault-tolerant and ready for beta testing</li></ul><p>The project is written completely in Clojure and the server is built using <a href="https://github.com/ring-clojure/ring">ring</a> and <a href="https://github.com/weavejester/compojure">compojure</a> on top of <a href="https://github.com/http-kit/http-kit">http-kit</a>. It makes use of <a href="https://github.com/clojure/core.async">core.async</a> channels to have a very concurrent architecture. Here's a screenshot of me talking to <a href="https://t.me/zimbramailbot">@zimbramailbot</a>:</p><p><img src="/img/2020/zmb-2.png" alt="screenshot" /></p><p>I'm yet to set up a custom domain for it, but it'd all be done before next minor release. Finally, a big thanks to <a href="https://www.alwaysdata.com/en/">alwaysdata</a> for their awesome free plan. Don't forget to check out their great IPv6-ready PaaS offers.</p><p>🚣‍♂️</p>
+        <p>My college exclusively uses Zimbra 8 as its mail server and the most annoying part is that there's no easy way to fetch new emails automatically (unlike Gmail app). The unavailability of any official Android app only makes it worse. So it's been a while since I started working on <a href="https://github.com/praj-foss/zimbramailbot">this chatbot</a> that can forward emails from any Zimbra account to Telegram. On a side note, it's also helping me sharpen my Clojure skills for web dev. <!-- more --></p><h3 id="the-plan">The Plan</h3><p>The primary mode of accessing Zimbra is via an old-fashioned web app. While it's good enough for casual email management, I find the lack of an auto-updating inbox really annoying, i.e., you need to open the web app and check for new emails every time. Luckily they also have REST, GraphQL, and SOAP APIs to use their web service and I figured out how I could make a Telegram chatbot that could fetch emails from my Zimbra regularly. One more important feature is how Zimbra's own bot account (a.k.a <em>The Postmaster</em>) can send notification emails to a secondary email id. You can set it up to receive a notification mail ("New message received at ... ") on your Gmail each time your Zimbra receives something. Although it doesn't forward the actual content of the mail, it's the closest feature you can get to an auto-syncing inbox.</p><p><img src="/img/2020/zmb-1.png" alt="diagram" /></p><p>Making use of these notifications, the bot could reactively fetch new mails from Zimbra, making things more efficient than a usual polling strategy. I'll be continuing with their SOAP API since it's more mature and well documented. Under the hood, the bot is a usual web application that keeps responding to messages sent by the user. The bot should do the following:</p><ol><li>Fetch the Zimbra auth token from the user</li><li>Configure Zimbra to notify bot's custom mail server</li><li>On receiving a notification, fetch new mail from Zimbra</li><li>Format and forward the mail to user's Telegram</li></ol><p>Telegram's <a href="https://core.telegram.org/bots/api">Bot API</a> is heavily documented as well, making it fun to build great bots from scratch. One Google search can find a ton of articles on how to get started.</p><h3 id="current-status">Current status</h3><p>It just reached <em>0.0.5</em> and this pre-alpha bot is already online replying to basic commands, although it's not connectable to Zimbra yet. It's also the first project where I'm seriously moving with <em>Test Driven Developement</em>, and it's been awesome so far. It should be noted that I've planned it to be compatible with any Zimbra 8 server, not just the one from my college. The roadmap is split something like this:</p><ul><li><em>0.1.0</em> : A dummy chatbot running online, CI/CD and a better domain</li><li><em>0.2.0</em> : Full compatibility with Zimbra 8, own mail server</li><li><em>0.3.0</em> : Postgres setup, fault-tolerant and ready for beta testing</li></ul><p>The project is written completely in Clojure and the server is built using <a href="https://github.com/ring-clojure/ring">ring</a> and <a href="https://github.com/weavejester/compojure">compojure</a> on top of <a href="https://github.com/http-kit/http-kit">http-kit</a>. It makes use of <a href="https://github.com/clojure/core.async">core.async</a> channels to have a very concurrent architecture. Here's a screenshot of me talking to <a href="https://t.me/zimbramailbot">@zimbramailbot</a>:</p><p><img src="/img/2020/zmb-2.png" alt="screenshot" /></p><p>I'm yet to set up a custom domain for it, but it'd all be done before next minor release. Finally, a big thanks to <a href="https://www.alwaysdata.com/en/">alwaysdata</a> for their awesome free plan. Don't forget to check out their great IPv6-ready PaaS offers. 🚣‍♂️</p>
     </div>
 
     
     <div class="post-tags">
         
-        <a href="/tags/Telegram/" class="button"># Telegram</a>
+        <a href="/tags/clojure/" class="button"># clojure</a>
         
-        <a href="/tags/Web%20Dev/" class="button"># Web Dev</a>
+        <a href="/tags/webdev/" class="button"># webdev</a>
         
-        <a href="/tags/Zimbra%20Mailbot/" class="button"># Zimbra Mailbot</a>
+        <a href="/tags/zimbra/" class="button"># zimbra</a>
         
-        <a href="/tags/Clojure/" class="button"># Clojure</a>
+        <a href="/tags/telegram/" class="button"># telegram</a>
         
     </div>
     

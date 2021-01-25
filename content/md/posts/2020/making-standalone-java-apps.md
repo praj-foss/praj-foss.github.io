@@ -1,7 +1,7 @@
 {:title  "Making Standalone Java apps"
  :date   "28-06-2020"
  :layout :post
- :tags   ["Packaging" "Java" "Gradle"]}
+ :tags   ["packaging" "java" "gradle"]}
 
 Back in high school days, I learned how Java programs could work flawlessly across different machines without the need for any additional compilation - **Write once, run anywhere**. One of our laptops had a 64-bit Ubuntu installed while the other one had a 32-bit Windows 7. I tested out on a few more platforms and realized one particular hurdle that constantly popped up: It was necessary to have Java installed beforehand, which most OSs didn't ship by default. So here's a post about how you could make your apps truly standalone. <!-- more -->
 

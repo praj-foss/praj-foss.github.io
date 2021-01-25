@@ -1,7 +1,7 @@
 {:title  "Self-contained, native-looking apps with SWT and ModiTect"
  :date   "19-07-2020"
  :layout :post
- :tags   ["Packaging" "SWT" "ModiTect" "Java" "Gradle"]}
+ :tags   ["native" "swt" "java" "gradle"]}
 
 The Standard Widget Toolkit, commonly known as [SWT](https://www.eclipse.org/swt/), is one of the few Java GUI libraries that are still actively maintained. Popularized by the use in Eclipse IDEs, it has a remarkable ability to present apps that look and feel **native** across all major desktops. Let me show you how to set up a Gradle project to build cross-platform, self-contained apps that mimic the native theme. 🤖 <!-- more -->
 

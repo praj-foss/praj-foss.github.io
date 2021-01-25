@@ -1,7 +1,7 @@
 {:title  "Starting my summer with GSoC 2019"
  :date   "14-05-2019"
  :layout :post
- :tags   ["GSoC" "Terasology"]}
+ :tags   ["gsoc" "terasology"]}
 
 It was probably the first time I received some Google-branded emails other than Google Forms stuff. May 7 was a day of celebration, kickstarting my journey into the open source world. Special thanks to [Terasology](https://terasology.org/) and all my mentors. <!-- more -->
 

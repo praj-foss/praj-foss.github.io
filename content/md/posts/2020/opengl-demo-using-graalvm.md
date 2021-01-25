@@ -1,7 +1,7 @@
 {:title  "OpenGL demo using GraalVM"
  :date   "21-06-2020"
  :layout :post
- :tags   ["GraalVM" "OpenGL" "Native" "Java" "Gradle"]}
+ :tags   ["graalvm" "opengl" "native" "java" "gradle"]}
 
 Let me show how you can use [GraalVM](https://www.graalvm.org/) to create an OpenGL app in Java. This is made possible by the _native-image_ tool that helps GraalVM produce truly native binaries capable of interacting with native libraries directly, without any JNI overhead. ⚡️ <!-- more -->
 

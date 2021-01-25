@@ -1,7 +1,7 @@
 {:title  "GSoC 2019: Week 1 updates"
  :date   "02-06-2019"
  :layout :post
- :tags   ["GSoC" "Terasology"]}
+ :tags   ["gsoc" "terasology"]}
 
 The first week of coding came to an end. This month's target is to implement a Server manager and a Game manager. I did spend a good amount of time preparing and learning more about the tools that can come handy. Besides that, a whole new base layout is ready for the launcher's UI. <!-- more -->
 

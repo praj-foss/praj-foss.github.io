@@ -1,7 +1,7 @@
 {:title  "GSoC 2019: Week 2 updates"
  :date   "10-06-2019"
  :layout :post
- :tags   ["GSoC" "Terasology"]}
+ :tags   ["gsoc" "terasology"]}
 
 This week mostly involved studies and work for the Server Manager. On a new branch, I have started replacing the old UI code. Probably at the end of this summer, it'll get merged into _develop_ branch, when the launcher will be on the verge of version 4. <!-- more -->
 

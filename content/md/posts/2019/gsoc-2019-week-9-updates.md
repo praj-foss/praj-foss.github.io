@@ -1,7 +1,7 @@
 {:title  "GSoC 2019: Week 9 updates"
  :date   "01-08-2019"
  :layout :post
- :tags   ["GSoC" "Terasology"]}
+ :tags   ["gsoc" "terasology"]}
 
 So the first week of our third phase, finally came to an end. Almost the entire week was dedicated to the package manager, and it's still far from being complete. But the launcher no longer crashes or freezes while starting up with it, and that's a relieving thing to see. <!-- more -->
 

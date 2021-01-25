@@ -1,7 +1,7 @@
 {:title  "Zimbra Mailbot: Update 1"
  :date   "13-08-2020"
  :layout :post
- :tags   ["Telegram" "Web Dev" "Zimbra Mailbot" "Clojure"]}
+ :tags   ["telegram" "webdev" "zimbra" "clojure"]}
 
 My college exclusively uses Zimbra 8 as its mail server and the most annoying part is that there's no easy way to fetch new emails automatically (unlike Gmail app). The unavailability of any official Android app only makes it worse. So it's been a while since I started working on [this chatbot](https://github.com/praj-foss/zimbramailbot) that can forward emails from any Zimbra account to Telegram. On a side note, it's also helping me sharpen my Clojure skills for web dev. <!-- more -->
 
@@ -32,6 +32,4 @@ The project is written completely in Clojure and the server is built using [ring
 
 ![screenshot](/img/2020/zmb-2.png)
 
-I'm yet to set up a custom domain for it, but it'd all be done before next minor release. Finally, a big thanks to [alwaysdata](https://www.alwaysdata.com/en/) for their awesome free plan. Don't forget to check out their great IPv6-ready PaaS offers.
-
-🚣‍♂️
+I'm yet to set up a custom domain for it, but it'd all be done before next minor release. Finally, a big thanks to [alwaysdata](https://www.alwaysdata.com/en/) for their awesome free plan. Don't forget to check out their great IPv6-ready PaaS offers. 🚣‍♂️

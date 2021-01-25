@@ -1,7 +1,7 @@
 {:title  "GSoC 2019: Week 6 updates"
  :date   "08-07-2019"
  :layout :post
- :tags   ["GSoC" "Terasology"]}
+ :tags   ["gsoc" "terasology"]}
 
 This week was devoted to design and development of the new package manager, another flagship feature for the Launcher's upcoming release.<!-- more -->
 

@@ -1,7 +1,7 @@
 {:title  "Calling uname from Java using GraalVM"
  :date   "21-08-2020"
  :layout :post
- :tags   ["GraalVM" "Linux" "Native" "Java"]}
+ :tags   ["graalvm" "linux" "native" "java"]}
 
 For years I'd been searching how to build native Linux apps using Java and somehow [GraalVM](https://www.graalvm.org/) has concluded it all. GraalVM's native-image tooling is arguably the most elegant way of connecting Java to the native world. We'll be exploring a clean way to interoperate with C libraries by writing a [uname](https://en.wikipedia.org/wiki/Uname) alternative in pure Java. No JNI mess, no `sun.misc.Unsafe` imports, just GraalVM. 🛠️ <!-- more -->
 

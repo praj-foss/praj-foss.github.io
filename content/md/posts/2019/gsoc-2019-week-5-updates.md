@@ -1,7 +1,7 @@
 {:title  "GSoC 2019: Week 5 updates"
  :date   "02-07-2019"
  :layout :post
- :tags   ["GSoC" "Terasology"]}
+ :tags   ["gsoc" "terasology"]}
 
 The first phase of GSoC came to an end with a month full of awesome experiences. This last week of June had seen works on the new, dedicated project for producing customized runtime for bundling along with the launcher. <!-- more -->
 

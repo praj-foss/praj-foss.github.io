@@ -1,7 +1,7 @@
 {:title  "Introduction to Terasology Launcher"
  :date   "25-05-2019"
  :layout :post
- :tags   ["GSoC" "Terasology"]}
+ :tags   ["gsoc" "terasology"]}
 
 This summer I'll be working on [Terasology Launcher](https://github.com/MovingBlocks/TerasologyLauncher), the official launcher for the [Terasology](https://terasology.org/) project. It helps in managing various game versions and configuring local storage, memory settings, and logging level. My project aims to enhance the launcher and make it easier to use. All the progress will be showcased in the upcoming version **4.0**. <!-- more -->
 

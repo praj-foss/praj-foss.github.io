@@ -1,7 +1,7 @@
 {:title  "GSoC 2019: Week 11 updates"
  :date   "13-08-2019"
  :layout :post
- :tags   ["GSoC" "Terasology"]}
+ :tags   ["gsoc" "terasology"]}
 
 The penultimate week of GSoC was filled with architectural designs and discussions. I've spent a good amount of time researching on _apt_, _pacman_ and _npm_, and along with the lessons learned from the previous Package Manager implementation, we're planning out an improved design for making the Package Manager more extensible and robust. <!-- more -->
 

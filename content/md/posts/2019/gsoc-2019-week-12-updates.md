@@ -1,7 +1,7 @@
 {:title  "GSoC 2019: Week 12 updates"
  :date   "22-08-2019"
  :layout :post
- :tags   ["GSoC" "Terasology"]}
+ :tags   ["gsoc" "terasology"]}
 
 Finally, we're at the end! This last week of GSoC includes implementation of parts of the revised Package Manager model, namely the _PackageDatabase_ and some methods for interacting with [our Jenkins](http://jenkins.terasology.org) repository. <!-- more -->
 

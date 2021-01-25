@@ -1,7 +1,7 @@
 {:title  "The Season of Lockdowns"
  :date   "07-06-2020"
  :layout :post
- :tags   ["Non Tech"]}
+ :tags   ["status"]}
 
 We all expect a bunch of new stories, resolutions, and ideas popping up at the start of each year. But 2020 wasn't supposed to be just another year, it's a new decade. So it's natural to expect that the usual new year excitement would be amped up all round the world. Alas, things turned out in an exactly opposite way, isn't it? <!-- more -->
 

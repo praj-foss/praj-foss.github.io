@@ -1,7 +1,7 @@
 {:site-title                   "Priyadarshi Raj"
  :author                       "Priyadarshi Raj"
  :description                  "I'm a computer science undergrad and a passionate software craftsman"
- :site-url                     "https://www.praj.in"
+ :site-url                     "https://www.praj.in/"
  :post-root                    "posts"
  :page-root                    "pages"
  :post-root-uri                "posts"
@@ -11,12 +11,12 @@
  :public-dest                  "docs"
  :blog-prefix                  ""
  :rss-name                     "feed.xml"
- :rss-filters                  ["cryogen"]
+ :rss-filters                  ["praj"]
  :recent-posts                 3
  :post-date-format             "dd-MM-yyyy"
  :archive-group-format         "yyyy"
  :sass-src                     []
- :sass-path                    "sass"
+ :sass-path                    ""
  :theme                        "dichromate"
  :resources                    ["img"]
  :keep-files                   ["CNAME"]

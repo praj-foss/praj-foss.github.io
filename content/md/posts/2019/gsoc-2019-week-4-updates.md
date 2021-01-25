@@ -1,7 +1,7 @@
 {:title  "GSoC 2019: Week 4 updates"
  :date   "28-06-2019"
  :layout :post
- :tags   ["GSoC" "Terasology"]}
+ :tags   ["gsoc" "terasology"]}
 
 A much-anticipated feature was successfully implemented this week - **bundled JRE**. Gradle now automatically bundles any given JRE with the generated application package. <!-- more -->
 

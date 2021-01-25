@@ -1,7 +1,7 @@
 {:title  "GSoC 2019: Week 3 updates"
  :date   "18-06-2019"
  :layout :post
- :tags   ["GSoC" "Terasology"]}
+ :tags   ["gsoc" "terasology"]}
 
 Whew! Probably got the highest number of crashes this week. 😅 I tried to do too many changes in the launcher's initialization phase got the code jumbled up, the main reason for my headache. <!-- more -->
 

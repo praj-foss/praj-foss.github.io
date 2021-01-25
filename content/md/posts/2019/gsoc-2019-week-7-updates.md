@@ -1,7 +1,7 @@
 {:title  "GSoC 2019: Week 7 updates"
  :date   "27-07-2019"
  :layout :post
- :tags   ["GSoC" "Terasology"]}
+ :tags   ["gsoc" "terasology"]}
 
 A long-standing bug was fixed this week. This had been the cause of [a test failure](http://jenkins.terasology.org/view/Launcher/job/TerasologyLauncherPRs/114/testReport/) in _TerasologyLauncherPRs_ job of [our Jenkins](http://jenkins.terasology.org/), for almost as long as a month. Also did a few tweaks on the Package Manager API, along with a diagram for my initial plan. <!-- more -->
 

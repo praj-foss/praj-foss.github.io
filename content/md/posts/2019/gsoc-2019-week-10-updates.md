@@ -1,7 +1,7 @@
 {:title  "GSoC 2019: Week 10 updates"
  :date   "07-08-2019"
  :layout :post
- :tags   ["GSoC" "Terasology"]}
+ :tags   ["gsoc" "terasology"]}
 
 Alright! The last month is half done, and this week brings some more updates to the Package Manager. The integration is ready to be tested and is almost working just the way it used to, along with the invisible Package Manager underneath. Though it only supports storing and loading of cache now, future PRs should bring full powers to it: installation, uninstallation, etc. <!-- more -->
 

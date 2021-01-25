@@ -1,5 +1,5 @@
 {% extends "/html/base.html" %}
-{%block subtitle %}{{post.title}} - {% endblock %}
+{%block subtitle %}{{post.title}} · {% endblock %}
 
 {% block meta %}
 <meta name="keywords" content="{% for tag in tags %}{{tag.name}}{% if not forloop.last %},{% endif %}{% endfor %}">
