@@ -17,7 +17,7 @@
  :archive-group-format         "yyyy"
  :sass-src                     []
  :sass-path                    ""
- :theme                        "dichromate"
+ :theme                        "dark"
  :resources                    ["img"]
  :keep-files                   ["CNAME"]
  :disqus?                      true
