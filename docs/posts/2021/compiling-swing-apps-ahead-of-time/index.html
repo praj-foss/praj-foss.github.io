@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compiling Swing apps ahead-of-time with GraalVM · Priyadarshi Raj</title>
+    <link rel="canonical" href="https://www.praj.in/posts/2021/compiling-swing-apps-ahead-of-time/">
+    <link rel="icon" href="/img/favicon.png" type="image/png">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-154882046-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-154882046-1');
+    </script>
+    
+<meta name="keywords" content="clojure,webdev,native,opengl,linux,java,swing,packaging,terasology,status,swt,gradle,zimbra,telegram,llvm,graalvm,gsoc">
+
+<meta name="description" content="Being the first major release of this year, GraalVM 21.0 added experimental support for Swing and AWT on Linux. A few weeks back I was compiling one Swing app with native-image and the result was as good as I had expected. Even though Swing is almost deprecated, this is a pretty welcome change considering a large number of desktop apps that can make use of this. So while the GraalVM team extends this feature to Windows and macOS, let us dive in.">
+
+<meta property="og:description" content="Being the first major release of this year, GraalVM 21.0 added experimental support for Swing and AWT on Linux. A few weeks back I was compiling one Swing app with native-image and the result was as good as I had expected. Even though Swing is almost deprecated, this is a pretty welcome change considering a large number of desktop apps that can make use of this. So while the GraalVM team extends this feature to Windows and macOS, let us dive in.">
+
+<meta property="og:url" content="https://www.praj.in/posts/2021/compiling-swing-apps-ahead-of-time/" />
+<meta property="og:title" content="Compiling Swing apps ahead-of-time with GraalVM" />
+<meta property="og:type" content="article" />
+
+    <script src="//twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="preconnect" href="//fonts.gstatic.com">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Raleway:wght@300;400;600&display=swap">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link href="/css/prism.css" rel="stylesheet" type="text/css" />
+    <link href="/css/style.css" rel="stylesheet" type="text/css" />
+    <script src="/js/main.js"></script>
+</head>
+<body>
+    <div id="sidebar">
+        <div class="intro">
+            <h5 class="brand"><a href="/" class="white-link">Priyadarshi Raj</a></h5>
+            <img id="avatar" src="/img/avatar.jpg" alt="avatar">
+            <p class="about">I&#39;m a computer science undergrad and a passionate software craftsman</p>
+            <nav>
+                <a href="/" >Home</a>
+                
+                <a href="/about/" >About</a>
+                
+                <a href="/projects/" >Projects</a>
+                
+                <a href="/archives/" >Archives</a>
+            </nav>
+        </div>
+        <div class="social">
+            <a href="https://github.com/praj-foss"><i data-feather="github"></i></a>
+            <a href="https://www.linkedin.com/in/priyadarshi-raj-740783197/"><i data-feather="linkedin"></i></a>
+            <a href="https://twitter.com/praj_foss"><i data-feather="twitter"></i></a>
+            <a href="/feed.xml"><i data-feather="rss"></i></a>
+        </div>
+    </div>
+    <script>checkSidebar();</script>
+
+    <main>
+        <header>
+            <h4 class="brand"><a href="/" class="white-link">Priyadarshi Raj</a></h4>
+        </header>
+        <div class="container"> 
+            
+<div class="card">
+    <div class="post-header">
+        <h2>Compiling Swing apps ahead-of-time with GraalVM</h2>
+        <p class="date">April 23, 2021</p>
+    </div>
+    <div class="post-content">
+        <p>Being the first major release of this year, <a href="https://www.graalvm.org/release-notes/21_0/#native-image">GraalVM 21.0</a> added experimental support for Swing and AWT on Linux. A few weeks back I was compiling one Swing app with <code>native-image</code> and the result was as good as I had expected. Even though Swing is almost deprecated, this is a pretty welcome change considering a large number of desktop apps that can make use of this. So while the GraalVM team extends this feature to Windows and macOS, let us dive in.</p><h3 id="prerequisites">Prerequisites</h3><p>Before building the native image, note that Swing is a GUI toolkit and it needs to connect with your graphics stack via JNI to draw its widgets. For this reason, you'll need to provide additional information to <code>native-image</code> tool regarding the JNI calls. You'll also need all the required library headers for linking your executable. So make sure you have the following libraries and their headers installed:</p><ul><li>libttf</li><li>libtinput</li><li>libgl</li></ul><p>This time we'll be using the <a href="https://github.com/JFormDesigner/FlatLaf">FlatLaf</a> demo app as an example. Keep reading to know how to generate the required config files. You can find all of the required files in <a href="https://github.com/praj-foss/swing-graalvm-demo">this repo</a>, along with the final executable if you're as impatient as I am. 😁</p><h3 id="building">Building</h3><p>To generate the config files, we traditionally launch the app using the <code>java</code> command provided by GraalVM along with a <a href="https://link.medium.com/7UEnv27dIfb">Tracing Agent</a> that keeps track of all Reflection and JNI calls.</p><pre><code class="lang-shell-session">java -agentlib:native-image-agent=config-output-dir=config -jar flatlaf-demo.jar
+</code></pre><p>After the app launches, be sure to interact with as many widgets as possible to trigger all possible JNI/Reflection calls. This step is very important as these methods get invoked reflectively at runtime and the agent will not be able to detect them unless we trigger the proper events. This can result in the app throwing a bunch of <code>NoSuchMethodException</code> when AoT-compiled.</p><p>Once you're done testing all the sections, close the app to write the required JSON files in the <code>config</code> directory. Now move on with building the native image with the following arguments:</p><pre><code class="lang-shell-session">native-image --no-fallback \
+             -H:ConfigurationFileDirectories=config \
+             -Djava.awt.headless=false \
+             -J-Xmx7G \
+             -jar flatlaf-demo.jar \
+             demo
+</code></pre><p>It will take a while depending on your machine, and generate a <strong>56 MB</strong> binary named <code>demo</code>. You can compress it further down to <strong>19 MB</strong> by using <code>upx</code>.</p><h3 id="result">Result</h3><p>And there you have it: A nice, little, standalone executable that launches a Swing app in the blink of an eye.</p><p><img src="/img/2021/flatlaf-demo.png" alt="FlatLaf Demo" /></p><p>Besides the improved startup performance, distributing your Swing app is now as easy as sharing an <a href="https://appimage.org/">AppImage</a>. It'll be interesting to see if JetBrains IDEs make use of this. I'm feeling pretty excited to write some toy apps now, but I think it's time to go back to studying, cuz my end-semester exams are coming next week. 😅</p>
+    </div>
+
+    
+    <div class="post-tags">
+        
+        <a href="/tags/native/" class="button"># native</a>
+        
+        <a href="/tags/java/" class="button"># java</a>
+        
+        <a href="/tags/swing/" class="button"># swing</a>
+        
+        <a href="/tags/graalvm/" class="button"># graalvm</a>
+        
+    </div>
+    
+
+    <div class="pagenav pagenav-center">
+        
+        
+        <a href="/posts/2021/new-year-new-start/">New Year, New Start &#9658;</a>
+        
+    </div>
+
+    
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+            this.page.url = "https://www.praj.in/posts/2021/compiling-swing-apps-ahead-of-time/";
+            this.page.identifier = "Compiling Swing apps ahead-of-time with GraalVM";
+        };
+        (function() { 
+            var d = document, s = d.createElement('script');
+            s.src = 'https://praj-in.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', + new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+</div>
+
+        </div>
+        <footer>Copyright &copy; 2019 - 2021 Priyadarshi Raj</footer>
+    </main>
+
+    <div class="panel">
+        <button id="button-home" class="panel-button" onclick="gotoPage(this)" data-href="/"><i data-feather="home"></i></button>
+        <button id="button-share" class="panel-button" onclick="gotoPage(this)" data-href="/about"><i data-feather="user"></i></button>
+        <button id="button-top" class="panel-button" onclick="gotoTop()"><i data-feather="arrow-up-circle"></i></button>
+        <button id="button-menu" class="panel-button" onclick="toggleMenu()"><i id="icon-menu" data-feather="menu"></i><i id="icon-close" class="hidden" data-feather="x"></i></button>
+    </div>
+    <script>
+        feather.replace();
+        twemoji.parse(document.getElementsByClassName("container")[0]);
+    </script>
+    <script src="/js/prism.js"></script>
+</body>
+</html>

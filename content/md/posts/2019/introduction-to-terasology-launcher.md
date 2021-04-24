@@ -9,7 +9,9 @@ This summer I'll be working on [Terasology Launcher](https://github.com/MovingBl
 
 Here's how the current version (3.x) of the launcher looks like:
 
-![Current build](/img/2019/2019-05-22-162257_971x593_scrot.png)![Settings](/img/2019/2019-05-22-162322_692x600_scrot.png)
+![Current build](/img/2019/2019-05-22-162257_971x593_scrot.png)
+
+![Settings](/img/2019/2019-05-22-162322_692x600_scrot.png)
 
 The launcher is written in Java and uses JavaFX for its UI. At least Java 8 is required to start the launcher. The source code is available on GitHub under Apache License 2.0.
 

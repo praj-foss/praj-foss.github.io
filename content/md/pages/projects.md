@@ -13,7 +13,7 @@ A software project for managing collection of municipal solid waste (MSW), creat
 
 #### [Zimbra Mailbot](https://github.com/praj-foss/zimbramailbot)
 
-An open-source Telegram chatbot that can fetch emails from any Zimbra account. It's written completely in Clojure and is built on top of [alwaysdata](https://www.alwaysdata.com/en/) PaaS. It's currently in pre-alpha stage under [active developement](/tags/Zimbra%20Mailbot/).
+An open-source Telegram chatbot that can fetch emails from any Zimbra account. It's written completely in Clojure and is built on top of [alwaysdata](https://www.alwaysdata.com/en/) PaaS. It's currently in pre-alpha stage.
 
 #### Others
 
