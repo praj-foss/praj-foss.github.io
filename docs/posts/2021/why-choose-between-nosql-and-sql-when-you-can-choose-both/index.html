@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why choose between NoSQL and SQL when you can choose both? · Priyadarshi Raj</title>
+    <link rel="canonical" href="https://www.praj.in/posts/2021/why-choose-between-nosql-and-sql-when-you-can-choose-both/">
+    <link rel="icon" href="/img/favicon.png" type="image/png">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-154882046-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-154882046-1');
+    </script>
+    
+<meta name="keywords" content="nosql,clojure,webdev,native,opengl,linux,java,swing,packaging,terasology,status,database,oci,swt,gradle,zimbra,telegram,llvm,graalvm,sql,gsoc">
+
+<meta name="description" content="I&#39;ve been lurking around the cloud vendors&#39; freebies for a while now, and I realized the best &#39;Always free&#39; tier is neither from AWS, GCP, nor Azure ... it&#39;s from my bad boi Oracle, and it is surprisingly good. Among that is one eye-catching offer: 20GB of Oracle Autonomous JSON Database. It&#39;s based on the multi-model Oracle Database but geared towards storing JSON and performing SQL and NoSQL-style queries. Keep reading to see my experience working with it and decide if it&#39;ll be an ideal pick for your next project. ⛵">
+
+<meta property="og:description" content="I&#39;ve been lurking around the cloud vendors&#39; freebies for a while now, and I realized the best &#39;Always free&#39; tier is neither from AWS, GCP, nor Azure ... it&#39;s from my bad boi Oracle, and it is surprisingly good. Among that is one eye-catching offer: 20GB of Oracle Autonomous JSON Database. It&#39;s based on the multi-model Oracle Database but geared towards storing JSON and performing SQL and NoSQL-style queries. Keep reading to see my experience working with it and decide if it&#39;ll be an ideal pick for your next project. ⛵">
+
+<meta property="og:url" content="https://www.praj.in/posts/2021/why-choose-between-nosql-and-sql-when-you-can-choose-both/" />
+<meta property="og:title" content="Why choose between NoSQL and SQL when you can choose both?" />
+<meta property="og:type" content="article" />
+
+    <script src="//twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="preconnect" href="//fonts.gstatic.com">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Raleway:wght@300;400;600&display=swap">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link href="/css/prism.css" rel="stylesheet" type="text/css" />
+    <link href="/css/style.css" rel="stylesheet" type="text/css" />
+    <script src="/js/main.js"></script>
+</head>
+<body>
+    <div id="sidebar">
+        <div class="intro">
+            <h5 class="brand"><a href="/" class="white-link">Priyadarshi Raj</a></h5>
+            <img id="avatar" src="/img/avatar.jpg" alt="avatar">
+            <p class="about">A passionate software craftsman, and a lover of open-source culture</p>
+            <nav>
+                <a href="/" >Home</a>
+                
+                <a href="/about/" >About</a>
+                
+                <a href="/projects/" >Projects</a>
+                
+                <a href="/archives/" >Archives</a>
+            </nav>
+        </div>
+        <div class="social">
+            <a href="https://github.com/praj-foss"><i data-feather="github"></i></a>
+            <a href="https://www.linkedin.com/in/priyadarshi-raj-740783197/"><i data-feather="linkedin"></i></a>
+            <a href="https://twitter.com/praj_foss"><i data-feather="twitter"></i></a>
+            <a href="/feed.xml"><i data-feather="rss"></i></a>
+        </div>
+    </div>
+    <script>checkSidebar();</script>
+
+    <main>
+        <header>
+            <h4 class="brand"><a href="/" class="white-link">Priyadarshi Raj</a></h4>
+        </header>
+        <div class="container"> 
+            
+<div class="card">
+    <div class="post-header">
+        <h2>Why choose between NoSQL and SQL when you can choose both?</h2>
+        <p class="date">August 17, 2021</p>
+    </div>
+    <div class="post-content">
+        <p>I've been lurking around the cloud vendors' freebies for a while now, and I realized the best 'Always free' tier is neither from AWS, GCP, nor Azure ... it's from my bad boi Oracle, and it is <a href="https://www.oracle.com/cloud/free/#always-free">surprisingly good</a>. Among that is one eye-catching offer: 20GB of <a href="https://www.oracle.com/autonomous-database/autonomous-json-database">Oracle Autonomous JSON Database</a>. It's based on the multi-model Oracle Database but geared towards storing JSON and performing SQL and NoSQL-style queries. Keep reading to see my experience working with it and decide if it'll be an ideal pick for your next project. ⛵</p><p>Let's get this clear, working with JSON data in relational databases isn't a new thing. MySQL and Postgres have done this for a long time. And you aren't just storing the JSON as a VARCHAR or TEXT here. It is a <strong>natively supported</strong> datatype: You can deal with queries, joins, constraints, and stuff directly on the JSON when it's natively supported, just like you do with regular relational data. This experience of using SQL queries over JSON data is quite different from pure document stores like MongoDB, where the queries are in JSON.</p><p>So what's so special about Oracle Autonomous JSON Database (AJD)? The product features might not be unique, but it is undoubtedly a solid DBaaS choice: A fully-managed cloud-hosted document store, 20GB of forever-free space, automatic daily backups, with both SQL and MongoDB-like NoSQL APIs to manage your data ... I picked it up without a second thought. You know I don't usually promote non-FOSS solutions, but hey, who doesn't want cool freebies for personal projects?</p><h3 id="database-setup">Database setup</h3><p>First, you'll need an Oracle cloud account (of course, a credit card too). I won't be going into setup details for the AJD instance, but it's a matter of a few clicks when you refer to <a href="https://oracle.github.io/learning-library/developer-library/oracle-db-features-for-developers/workshops/adb-json-freetier/?lab=pre-register-free-tier-account">this page</a>. Just watch out for the correct options along the way (We're setting up a JSON DB, not Transaction Processing or Warehouse DB). Once the setup ends, proceed to Database Actions (a.k.a. SQL Developer), and log in. You'll reach this screen:</p><p><img src="/img/2021/ajd-db-actions.png" alt="Database Actions: Index page" /></p><p>There are two particular links in the 'Development' sections: The JSON mode to work in NoSQL-style, and the SQL mode for extra customization. Start with the JSON mode, and a tutorial should greet you. I created a collection known as <strong>veggies</strong> and put three documents in there.</p><p><img src="/img/2021/ajd-json.png" alt="Database Actions: JSON mode" /></p><h3 id="nosql-style">NoSQL style</h3><p>Here's how we query by example (QBE): Pass in a JSON object with any key-value pair, and it will return you a list of documents having similar properties. Let's get the veggies with low carbs and vitamin C:</p><pre><code class="lang-json">// Query
+{"carbs": "low", "vitamins": "C"}
+
+// Output
+{
+    "name": "Onion",
+    "color": "Pink",
+    "vitamins": [
+        "C",
+        "B9",
+        "B6"
+    ],
+    "carbs": "low",
+    "dangerous": true
+}
+</code></pre><p>Note that if any queried field turns out to be an array, it checks for the value inside the array, just like in the <code>vitamins</code> field. Let's try a bit more complex query in which we order the veggies by (a very biased) rating. Before that, you have to edit the JSON and put a <code>rating</code> field. I gave 4 to potato, 3.5 to carrot, and 5 to onion, then run the query with an <code>$orderBy</code> operation:</p><pre><code class="lang-json">// Query
+{"$orderBy": [{"path": "rating", "order": "asc"}]}
+
+// Output
+{ 
+  "name": "Carrot",
+  ...
+  "rating": 3.5
+},
+{ 
+  "name": "Potato",
+  ...
+  "rating": 4
+},
+{ 
+  "name": "Onion",
+  ...
+  "rating": 5
+}
+</code></pre><p>There are a set of SODA drivers that allow using the same convenient QBE syntax over in Java, Python, NodeJS, etc. Here's a snippet of how the exact query would look like in Java:</p><pre><code class="lang-java">try (var conn = dataSource.getConnection()) {
+    var soda = new OracleRDBMSClient();
+    var db = soda.getDatabase(conn);
+    var collection = db.openCollection("veggies");
+
+    var queryString = "{\"$orderBy\": [{\"path\": \"rating\", \"order\": \"asc\"}]}";
+
+    var found = collection.find().filter(queryString).getOne();
+    if (found != null) {
+        return found.getContentAsString();
+    }
+} catch (Exception e) {
+    // ...
+}
+</code></pre><h3 id="sql-style">SQL style</h3><p>Alright, that's about it from the NoSQL side. It's straightforward but not as expressive as SQL. Use the top menu to switch Database Actions into SQL mode. And immediately, you can observe how the underlying implementation of the collection works by looking at the left panel.</p><p><img src="/img/2021/ajd-sql.png" alt="Database Actions: SQL mode" /></p><p>It's just a database table with a unique column called <code>JSON_DOCUMENT</code> to store JSON data. Every document added here inserts a new row to this table with metadata like an auto-generated key, creation date, last modification date, and a version identifier. Being stored in a single column makes the data inherently schema-less since you can alter the JSON however you like. AJD provides many utility functions to deal with <a href="https://docs.oracle.com/en/database/oracle/oracle-database/19/adjsn/store-and-manage-json-data.html">JSON data in SQL</a>. We'll look at a few of them here, starting with the list of all our JSON documents:</p><p><img src="/img/2021/ajd-sql-select-all.png" alt="Query: Select all" /></p><p>You can see how the actual JSON content isn't displayed, but you get a <code>(BLOB)</code> placeholder. It's because AJD stores the JSON data in a proprietary binary format called <strong>OSON</strong>, similar to how MongoDB stores in BSON. To see the textual content, we need to use the <code>JSON_SERIALIZE</code> function.</p><p><img src="/img/2021/ajd-sql-json-serialize.png" alt="Query: Select all" /></p><p>Alright, let's declare all veggies non-dangerous, except onions of course (<em>I've seen people in tears when they try to cut it</em>). We make use of <code>JSON_MERGEPATCH</code> function to merge the original JSON with a new one. Also, notice how the dot operator lets us access the inner JSON fields:</p><pre><code class="lang-sql">UPDATE veggies v
+SET JSON_DOCUMENT = JSON_MERGEPATCH(JSON_DOCUMENT, '{"dangerous": false}')
+WHERE v.JSON_DOCUMENT.name != 'Onion'
+</code></pre><p><img src="/img/2021/ajd-sql-update.png" alt="Query result: Updating JSON" /></p><p>I decided to add a few more veggies now. You can use the standard <code>INSERT</code> clause to create documents, but that'd require filling the metadata columns manually. So we'll make use of the helper command <code>SODA</code> to handle this:</p><pre><code class="lang-sql">SODA INSERT veggies {"name":"Tomato", "color":"Red", "carbs":"low", "rating":5};
+SODA INSERT veggies {"name":"Pumpkin", "color":"Orange", "carbs":"low", "rating":3};
+SODA INSERT veggies {"name":"Beet", "color":"Maroon", "carbs":"high", "rating":3.5};
+</code></pre><p>Now we can group veggies by their carbs and find out what their average ratings are:</p><pre><code class="lang-sql">SELECT v.json_document.carbs, 
+       avg(v.json_document.rating) AS avg_rating,
+       count(*) AS total
+FROM veggies v
+GROUP BY v.json_document.carbs
+</code></pre><p><img src="/img/2021/ajd-sql-group-by.png" alt="Query result: Grouping" /></p><p>The report tells low-carb veggies to have better taste than others. If you don't believe that, you should be adding more data and improving the analysis. Set up an OCI account today and test-drive Oracle AJD for your next project. Feel free to reach out in the comments, and we'll meet another day. 👋</p>
+    </div>
+
+    
+    <div class="post-tags">
+        
+        <a href="/tags/nosql/" class="button"># nosql</a>
+        
+        <a href="/tags/webdev/" class="button"># webdev</a>
+        
+        <a href="/tags/java/" class="button"># java</a>
+        
+        <a href="/tags/database/" class="button"># database</a>
+        
+        <a href="/tags/oci/" class="button"># oci</a>
+        
+        <a href="/tags/sql/" class="button"># sql</a>
+        
+    </div>
+    
+
+    <div class="pagenav pagenav-center">
+        
+        
+        <a href="/posts/2021/compiling-swing-apps-ahead-of-time/">Compiling Swing apps ahead-of-time with GraalVM &#9658;</a>
+        
+    </div>
+
+    
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+            this.page.url = "https://www.praj.in/posts/2021/why-choose-between-nosql-and-sql-when-you-can-choose-both/";
+            this.page.identifier = "Why choose between NoSQL and SQL when you can choose both?";
+        };
+        (function() { 
+            var d = document, s = d.createElement('script');
+            s.src = 'https://praj-in.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', + new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+</div>
+
+        </div>
+        <footer>Copyright &copy; 2019 - 2021 Priyadarshi Raj</footer>
+    </main>
+
+    <div class="panel">
+        <button id="button-home" class="panel-button" onclick="gotoPage(this)" data-href="/"><i data-feather="home"></i></button>
+        <button id="button-share" class="panel-button" onclick="gotoPage(this)" data-href="/about"><i data-feather="user"></i></button>
+        <button id="button-top" class="panel-button" onclick="gotoTop()"><i data-feather="arrow-up-circle"></i></button>
+        <button id="button-menu" class="panel-button" onclick="toggleMenu()"><i id="icon-menu" data-feather="menu"></i><i id="icon-close" class="hidden" data-feather="x"></i></button>
+    </div>
+    <script>
+        feather.replace();
+        twemoji.parse(document.getElementsByClassName("container")[0]);
+    </script>
+    <script src="/js/prism.js"></script>
+</body>
+</html>
