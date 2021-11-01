@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exploring JNR (Part 1) - A faster way to connect Java to native libraries · Priyadarshi Raj</title>
+    <link rel="canonical" href="https://www.praj.in/posts/2021/exploring-jnr-part-1/">
+    <link rel="icon" href="/img/favicon.png" type="image/png">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-154882046-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-154882046-1');
+    </script>
+    
+<meta name="keywords" content="nosql,jni,clojure,webdev,native,opengl,linux,java,swing,packaging,jnr,terasology,status,database,oci,swt,gradle,zimbra,telegram,llvm,graalvm,sql,gsoc">
+
+<meta name="description" content="If you&#39;re writing an actual desktop software, you&#39;ll sometimes find a need to call system services from your favorite language. For a Java developer like me, it hurts me every time I&#39;m reminded how messy it is to connect to native libraries in the standard way, i.e. using JNI. Fortunately, there are other libraries JNA, JNR, Panama, etc. that were designed to make this labor easier. In today&#39;s post, I&#39;ll be showing you how to connect to a C library using JNR FFI - a simple, modern, and performant framework, that also happens to be surprisingly undocumented.">
+
+<meta property="og:description" content="If you&#39;re writing an actual desktop software, you&#39;ll sometimes find a need to call system services from your favorite language. For a Java developer like me, it hurts me every time I&#39;m reminded how messy it is to connect to native libraries in the standard way, i.e. using JNI. Fortunately, there are other libraries JNA, JNR, Panama, etc. that were designed to make this labor easier. In today&#39;s post, I&#39;ll be showing you how to connect to a C library using JNR FFI - a simple, modern, and performant framework, that also happens to be surprisingly undocumented.">
+
+<meta property="og:url" content="https://www.praj.in/posts/2021/exploring-jnr-part-1/" />
+<meta property="og:title" content="Exploring JNR (Part 1) - A faster way to connect Java to native libraries" />
+<meta property="og:type" content="article" />
+
+    <script src="//twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="preconnect" href="//fonts.gstatic.com">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Raleway:wght@300;400;600&display=swap">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link href="/css/prism.css" rel="stylesheet" type="text/css" />
+    <link href="/css/style.css" rel="stylesheet" type="text/css" />
+    <script src="/js/main.js"></script>
+</head>
+<body>
+    <div id="sidebar">
+        <div class="intro">
+            <h5 class="brand"><a href="/" class="white-link">Priyadarshi Raj</a></h5>
+            <img id="avatar" src="/img/avatar.jpg" alt="avatar">
+            <p class="about">A passionate software craftsman, and a lover of open-source culture</p>
+            <nav>
+                <a href="/" >Home</a>
+                
+                <a href="/about/" >About</a>
+                
+                <a href="/projects/" >Projects</a>
+                
+                <a href="/archives/" >Archives</a>
+            </nav>
+        </div>
+        <div class="social">
+            <a href="https://github.com/praj-foss"><i data-feather="github"></i></a>
+            <a href="https://www.linkedin.com/in/priyadarshi-raj-740783197/"><i data-feather="linkedin"></i></a>
+            <a href="https://twitter.com/praj_foss"><i data-feather="twitter"></i></a>
+            <a href="/feed.xml"><i data-feather="rss"></i></a>
+        </div>
+    </div>
+    <script>checkSidebar();</script>
+
+    <main>
+        <header>
+            <h4 class="brand"><a href="/" class="white-link">Priyadarshi Raj</a></h4>
+        </header>
+        <div class="container"> 
+            
+<div class="card">
+    <div class="post-header">
+        <h2>Exploring JNR (Part 1) - A faster way to connect Java to native libraries</h2>
+        <p class="date">October 28, 2021</p>
+    </div>
+    <div class="post-content">
+        <p>If you're writing an <em>actual</em> desktop software, you'll sometimes find a need to call system services from your favorite language. For a Java developer like me, it hurts me every time I'm reminded <a href="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/JNI_OBE/JNI_OBE.html">how messy it is</a> to connect to native libraries in the standard way, i.e. using JNI. Fortunately, there are other libraries JNA, JNR, Panama, etc. that were designed to make this labor easier. In today's post, I'll be showing you how to connect to a C library using <a href="https://github.com/jnr/jnr-ffi">JNR FFI</a> - a simple, modern, and performant framework, that also happens to be surprisingly undocumented.</p><p>The JNI approach involves writing glue code in C/C++, compiling them on each target platform, and bundling them along with the jar files for distribution. This is quite a hectic task, as manually writing the JNI C code can be error-prone, and it's also tough to maintain when the bindings grow large. It has also been the <em>only</em> official way till now, and with proper tuning, it should achieve the maximum performance possible. The most popular alternative to this is <a href="https://github.com/java-native-access/jna">JNA</a>, which has been used by thousands of Java apps for quite a while. JNA allows us to write the bindings directly in Java, as it automatically generates required the JNI metadata on the fly without the need for compiling any C/C++ code on your side.</p><p>JNR is a newer framework, with goals similar to JNA, but has a different API and underlying technology. I prefer the JNR API because of its simplicity and also the <a href="https://github.com/zakgof/java-native-benchmark">performance edge</a> over JNA, but it's quite challenging to try at first because of the <a href="https://github.com/jnr/jnr-ffi/tree/master/docs">lack of documentation</a>. Later in the post, I'll describe some fundamental examples using a tiny library I wrote in C, and hopefully, that'll serve as a good starting point for any newcomer. The newest one of the frameworks is <a href="https://openjdk.java.net/projects/panama">Project Panama</a>, which is still in the incubation phase as of OpenJDK 17. It is expected that Panama will drastically simplify the development work, as it will provide the tooling to automatically generate binding from any C library, wiping out the need to write even the Java bits of glue code from JNA or JNR. It should also be very optimized, thanks to the development done by the OpenJDK team itself. But while they work on making it stable, let us dive into JNR, which is one of the best choices as of now.</p><h3 id="prerequisites">Prerequisites</h3><p>The source code is available <a href="https://github.com/praj-foss/jnr-demo">on GitHub</a> as always. The project contains C code, so you'll need GCC or any other C compiler to build the native library first. JNR requires JDK 8 or higher, but in this example, I'll be using Java 11 for development. Make sure you're not running these examples on any machine architecture that is unsupported by JNR, which is highly unlikely given how widespread ARM and x86 chips are these days.</p><p>The build script defines a task called <code>cc</code> that simply executes <code>gcc</code> underneath with proper flags. The <code>run</code> task is configured to take in the compiled library path. To build and run the project, you just have to enter <code>./gradlew basics:run</code>. It runs perfectly fine on Linux, while it might require some changes for Windows or OS X for the C library compiling and loading part. So make sure you do changes all necessary bits in <code>build.gradle.kts</code> if needed.</p><h3 id="examples">Examples</h3><p>JNR makes use of syntactic similarity between Java and C to link to the correct function calls. I would recommend going through the <a href="https://github.com/jnr/jnr-ffi/blob/master/docs/GettingStarted.md">official docs</a> once to get a basic idea before proceeding. The native function struct declarations should help you figure out the correct return types, input types, and annotations to put on your Java code. The C library I wrote doesn't provide a header file for the sake of simplicity, but almost all popular native libs should be providing one that you could make use of.</p><h4 id="basics">Basics</h4><p>First of all, you need to analyze the C headers of the target library and understand how the C types need to be mapped into corresponding Java types. Here are some declarations from <code>minimal.c</code> found in the project repo:</p><pre><code class="lang-c">long int get_sum(unsigned int first, unsigned int second);
+char *get_string();
+void fill_letter_union(letter_u *letter);
+small_s *get_small_struct();
+double some_opaque_extraction(void *opaque);
+// and more ...
+</code></pre><p>Next, you need to define a Java interface that has methods with appropriate input and return types to match those in the native function signatures. The method names must be identical to the function names. Here's how the interface for the previous C code would look like:</p><pre><code class="lang-java">public interface LibMinimal {
+    long get_sum(@u_int32_t int first, @u_int32_t int second);
+    String get_string();
+    void fill_letter_union(LetterUnion letter);
+    SmallStruct get_small_struct();
+    double some_opaque_extraction(Pointer opaque);
+    // and more ...
+}
+</code></pre><p>After that, you need to load the library and JNR will provide you an implementation of the previous interface, which can be used to call the native functions:</p><pre><code class="lang-java">import jnr.ffi.LibraryLoader;
+import jnr.ffi.Runtime;
+
+public class BasicApp {
+    public static void main(String[] args) {
+        var lib = LibraryLoader.create(LibMinimal.class).load("minimal");
+        var runtime = Runtime.getRuntime(lib);        
+        // ...
+        System.out.println(lib.get_sum(first, second));
+        var letterUnion = new LibMinimal.LetterUnion(runtime);
+        lib.fill_letter_union(letterUnion);
+        // ...
+    }
+}
+</code></pre><p>In the above code, JNR searched for the <strong>minimal</strong> library, which would exist as the <code>libminimal.so</code> file after we build <code>minimal.c</code>. Usually, if your libraries are installed correctly in the system, JNR will detect them easily. Otherwise, you'll need to manually provide the library path to the program. In this demo, the correct paths are passed into the program using <code>LD_LIBRARY_PATH</code> variable while invoking the <code>run</code> Gradle task.</p><h4 id="numbers">Numbers</h4><p>Common numeric types in C like <code>int</code>, <code>short</code>, <code>long</code>, <code>float</code>, and <code>double</code> correspond to the primitive types of the same name in Java. There are also handy annotations under the <code>jnr.ffi.types</code> that allow you to exactly specify the signedness and width of the types. For example, we can use <code>@u_int32_t</code> to represent unsigned 32-bit integers, and this should be used either on <code>int</code> or <code>long</code> type in Java. There are also annotations like <code>@pid_t</code>, <code>@size_t</code>, etc. for common type aliases. Here's an example involving signed and unsigned 32-bit integers:</p><pre><code class="lang-c">// minimal.c
+int get_integer() {
+    return 42;
+}
+
+long int get_sum(unsigned int first, unsigned int second) {
+    return first + second;
+}
+</code></pre><pre><code class="lang-java">// LibMinimal.java
+int get_integer();
+long get_sum(@u_int32_t int first, @u_int32_t int second);
+</code></pre><pre><code class="lang-java">// BasicApp.java
+System.out.println("Meaning of life = " + lib.get_integer());
+// Meaning of life = 42
+
+int first = -559087616, second = 48879;
+System.out.printf("%d + %d = %x\n", first, second, lib.get_sum(first, second));
+// -559087616 + 48879 = deadbeef
+</code></pre><h4 id="strings">Strings</h4><p>A <code>char</code> is 8-bit in C as compared to 16-bit in Java, and C strings are just <code>char</code> arrays with an extra <code>\0</code> at the end. JNR automatically converts Java's <code>char[]</code>, <code>String</code>, <code>StringBuilder</code>, and <code>StringBuffer</code> into C strings. All of these allow mutations, except the <code>String</code> values.</p><pre><code class="lang-c">// minimal.c
+char *get_string() {
+    char *str = (char *) malloc(6 * sizeof(char));
+    strcpy(str, "ASCII");
+    return str;
+}
+
+void mutate_string(char *input) {
+    int length = strlen(input);
+    int i = 0;
+    while (i &lt; length/2) {
+        char tmp = input[length-1-i];
+        input[length-1-i] = input[i];
+        input[i] = tmp;
+        i++;
+    }
+}
+
+</code></pre><pre><code class="lang-java">// LibMinimal.java
+String get_string();
+void mutate_string(StringBuilder input);
+</code></pre><pre><code class="lang-java">// BasicApp.java
+System.out.println("Received = " + lib.get_string());
+// Received = ASCII
+
+var builder = new StringBuilder("WXYZ");
+lib.mutate_string(builder);
+System.out.println("Reversed = " + builder);
+// Reversed = ZYXW
+</code></pre><h4 id="structs">Structs</h4><p>Structs are meant to store data in a structured way and the total size of the struct is the sum of all field sizes. To represent a struct, you need to define a subclass of <code>jnr.ffi.Struct</code> and use the inherited inner classes to specify the fields. Note that you need to specify the proper field sizes wherever necessary, e.g. in the case of string types. This helps JNR allocate sufficient memory when creating structs inside the Java heap. Also, ensure the constructor is public, there could be memory allocation issues otherwise. The <code>Struct</code> class also provides a handy <code>toString()</code> method that can print individual fields if they are <code>public</code> as well.</p><pre><code class="lang-c">// minimal.c
+typedef struct {
+    unsigned int index;
+    double value;
+} small_s;
+
+small_s *get_small_struct() {
+    small_s *ptr = (small_s *) malloc(sizeof(small_s));
+    ptr-&gt;index = 12;
+    ptr-&gt;value = 34.567;
+    return ptr;
+}
+
+typedef struct {
+    char name[32];
+    small_s *small;
+} large_s;
+
+void fill_large_struct(large_s *large) {
+    strcpy(large-&gt;name, "LARGE");
+    large-&gt;small-&gt;index = 98;
+    large-&gt;small-&gt;value = 76.543;
+}
+</code></pre><pre><code class="lang-java">// LibMinimal.java
+class SmallStruct extends Struct {
+    public final Unsigned32 index = new Unsigned32();
+    public final Double value = new Double();
+    public SmallStruct(Runtime runtime) {
+        super(runtime);
+    }
+}
+
+SmallStruct get_small_struct();
+
+class LargeStruct extends Struct {
+    public final AsciiString name = new AsciiString(32);
+    public final StructRef&lt;SmallStruct&gt; small = new StructRef&lt;&gt;(SmallStruct.class);
+    public LargeStruct(Runtime runtime) {
+        super(runtime);
+    }
+}
+
+void fill_large_struct(LargeStruct large);
+</code></pre><pre><code class="lang-java">// BasicApp.java
+var smallStruct = lib.get_small_struct();
+System.out.println(smallStruct);
+// SmallStruct { 
+//     index = 12
+//     value = 34.567
+// }
+
+var largeStruct = new LibMinimal.LargeStruct(runtime);
+largeStruct.small.set(smallStruct);
+lib.fill_large_struct(largeStruct);
+System.out.printf("Large struct data = %s, %d, %f\n",
+        largeStruct.name.get(), smallStruct.index.get(), smallStruct.value.get());
+// Large struct data = LARGE, 98, 76.543000
+</code></pre><p>Note that creating structs from Java requires you to provide an instance of <code>jnr.ffi.Runtime</code>. This will allocate temporary memory for the struct that usually gets destroyed after passing it to native functions. So to prevent the struct from being destroyed, we can allocate it on heap memory, either using <code>malloc</code> from C code or using <code>jnr.ffi.Memory.allocateDirect</code> from Java.</p><h4 id="unions">Unions</h4><p>Unions are the same as structs except for their memory structure. The total size of a union is the size of its largest field, and all the smaller fields use that same space. This means, each time you change a field in a union, the other fields will change too as all of them store data in the exact same memory chunk. To represent a union in Java, extend the <code>jnr.ffi.Union</code> class and follow the same rules as you did with structs:</p><pre><code class="lang-c">// minimal.c
+typedef union {
+    unsigned char l;
+    unsigned int v;
+} letter_u;
+
+void fill_letter_union(letter_u *letter) {
+    letter-&gt;v = 70;
+}
+</code></pre><pre><code class="lang-java">// LibMinimal.java
+class LetterUnion extends Union {
+    public final Unsigned8 l = new Unsigned8();
+    public final Unsigned32 v = new Unsigned32();
+    public LetterUnion(Runtime runtime) {
+        super(runtime);
+    }
+}
+
+void fill_letter_union(LetterUnion letter);
+</code></pre><pre><code class="lang-java">// BasicApp.java
+var letterUnion = new LibMinimal.LetterUnion(runtime);
+lib.fill_letter_union(letterUnion);
+System.out.printf("Letter returned = %c\n", letterUnion.l.get());
+// Letter returned = F
+</code></pre><h4 id="enums">Enums</h4><p>Enums in C are plain ol' integers, so you can simply use <code>int</code> to represent them in Java and pass in the raw numeric values instead of the enum constant name. However, JNR also provides a safer way to map them into normal Java enums, adding type-checking benefits. Create an enum that implements <code>jnr.ffi.util.EnumMapper.IntegerEnum</code> and return the appropriate integer when <code>intValue()</code> is called:</p><pre><code class="lang-c">// minimal.c
+typedef enum {
+    SUNNY  = 1,
+    CLOUDY = 2,
+    RAINY  = 3
+} weather_e;
+
+weather_e get_weather() {
+    return RAINY;
+}
+</code></pre><pre><code class="lang-java">// LibMinimal.java
+enum WeatherEnum implements EnumMapper.IntegerEnum {
+    SUNNY(1), CLOUDY(2), RAINY(3);
+
+    private final int value;
+    WeatherEnum(int value) {
+        this.value = value;
+    }
+
+    @Override
+    public int intValue() {
+        return value;
+    }
+}
+
+WeatherEnum get_weather();
+</code></pre><pre><code class="lang-java">// BasicApp.java
+System.out.println("Weather today = " + lib.get_weather());
+// Weather today = RAINY
+</code></pre><h4 id="opaque-pointers">Opaque pointers</h4><p>Sometimes you have to deal with a pointer to a struct whose definition is hidden, popularly known as opaque pointers. For such cases, you can use the general purpose <code>jnr.ffi.Pointer</code> class. In the following example, we declare an <em>obviously visible</em> struct called <code>opaque_s</code> and pretend it is hidden. We use <code>void</code> pointers so that the function signatures don't tell anything about <code>opaque_s</code>.</p><pre><code class="lang-c">// minimal.c
+typedef struct {
+    large_s *large;
+} opaque_s;
+
+void *get_opaque_pointer() {
+    opaque_s *ptr = (opaque_s *) malloc(sizeof(opaque_s));
+    ptr-&gt;large = (large_s *) malloc(sizeof(large_s));
+    ptr-&gt;large-&gt;small = get_small_struct();
+    ptr-&gt;large-&gt;small-&gt;value = 420.69;
+    return ptr;
+}
+
+double some_opaque_extraction(void *opaque) {
+    return ((opaque_s *) opaque)-&gt;large-&gt;small-&gt;value;
+}
+</code></pre><pre><code class="lang-java">// LibMinimal.java
+Pointer get_opaque_pointer();
+double some_opaque_extraction(Pointer opaque);
+</code></pre><pre><code class="lang-java">// BasicApp.java
+var opaque = lib.get_opaque_pointer();
+System.out.println("Extraction result = " + lib.some_opaque_extraction(opaque));
+// Extraction result = 420.69
+</code></pre><h4 id="function-pointers">Function pointers</h4><p>The last example is for function pointers: the normal way of doing making callbacks and higher-order functions in C. This is fortunately very easy to represent in idiomatic Java, using method references or lambda functions. You just need to define a <code>@FunctionalInterface</code> with one method annotated with <code>jnr.ffi.annotations.Delegate</code>, having the correct input and return types.</p><pre><code class="lang-c">// minimal.c
+typedef int (*unary)(int);
+
+int apply_unary_function(int arg, unary f) {
+    return f(arg);
+}
+</code></pre><pre><code class="lang-java">// LibMinimal.java
+@FunctionalInterface
+interface UnaryFunction {
+    @Delegate int apply(int input);
+}
+
+int apply_unary_function(int arg, UnaryFunction f);
+</code></pre><pre><code class="lang-java">// BasicApp.java
+System.out.printf("Square of %d = %d\n", 7, lib.apply_unary_function(7, n -&gt; n * n));
+// Square of 7 = 49
+</code></pre><h3 id="conclusion">Conclusion</h3><p>We just finished our test drive of JNR FFI and witnessed how it simplifies interaction with native libraries. Feel free to drop a comment if you have any questions or feedback. I'm planning to write more posts in this series, exploring some more complex parts of the API and connecting to popular Linux libraries. So we'll meet again! 🤖</p>
+    </div>
+
+    
+    <div class="post-tags">
+        
+        <a href="/tags/jni/" class="button"># jni</a>
+        
+        <a href="/tags/native/" class="button"># native</a>
+        
+        <a href="/tags/linux/" class="button"># linux</a>
+        
+        <a href="/tags/java/" class="button"># java</a>
+        
+        <a href="/tags/jnr/" class="button"># jnr</a>
+        
+    </div>
+    
+
+    <div class="pagenav pagenav-center">
+        
+        
+        <a href="/posts/2021/why-choose-between-nosql-and-sql-when-you-can-choose-both/">Why choose between NoSQL and SQL when you can choose both? &#9658;</a>
+        
+    </div>
+
+    
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+            this.page.url = "https://www.praj.in/posts/2021/exploring-jnr-part-1/";
+            this.page.identifier = "Exploring JNR (Part 1) - A faster way to connect Java to native libraries";
+        };
+        (function() { 
+            var d = document, s = d.createElement('script');
+            s.src = 'https://praj-in.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', + new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+</div>
+
+        </div>
+        <footer>Copyright &copy; 2019 - 2021 Priyadarshi Raj</footer>
+    </main>
+
+    <div class="panel">
+        <button id="button-home" class="panel-button" onclick="gotoPage(this)" data-href="/"><i data-feather="home"></i></button>
+        <button id="button-share" class="panel-button" onclick="gotoPage(this)" data-href="/about"><i data-feather="user"></i></button>
+        <button id="button-top" class="panel-button" onclick="gotoTop()"><i data-feather="arrow-up-circle"></i></button>
+        <button id="button-menu" class="panel-button" onclick="toggleMenu()"><i id="icon-menu" data-feather="menu"></i><i id="icon-close" class="hidden" data-feather="x"></i></button>
+    </div>
+    <script>
+        feather.replace();
+        twemoji.parse(document.getElementsByClassName("container")[0]);
+    </script>
+    <script src="/js/prism.js"></script>
+</body>
+</html>
